@@ -1,0 +1,22 @@
+{
+    "files.associations": {
+        "*.json": "jsonc",
+        "index.json": "json"
+    },
+    "eslint.workingDirectories": [
+        {
+            "pattern": "./packages/*/"
+        }
+    ],
+    // @see : https://cva.style/docs/getting-started/installation#intellisense
+    "tailwindCSS.experimental.classRegex": [
+        [
+            "cva\\(([^)]*)\\)",
+            "[\"'`]([^\"'`]*).*?[\"'`]"
+        ],
+        [
+            "cx\\(([^)]*)\\)",
+            "(?:'|\"|`)([^']*)(?:'|\"|`)"
+        ]
+    ]
+}
