@@ -78,7 +78,7 @@ const searchBarKeymap: readonly KeyBinding[] = ([
 ] as KeyBinding[]).concat(historyKeymap);
 
 const searchBarContainerVariants = cva(
-    "search-bar-container flex items-center justify-center py-0.5 px-2 border rounded-md relative",
+    "search-bar-container flex items-center justify-center gap-1 py-0.5 px-2 border rounded-md relative",
     {
         variants: {
             size: {
@@ -294,10 +294,10 @@ export const SearchBar = ({
             )}
             {isAiSearchModeEnabled ? (
                 <>
-                    <div className="mx-2 h-6 w-[2px] shrink-0 animate-pulse rounded-full bg-gradient-to-b from-foreground to-foreground/10" />
+                    <div className="h-6 w-[2px] shrink-0 animate-pulse rounded-full bg-gradient-to-b from-foreground to-foreground/10" />
                     <Badge
                         variant="outline"
-                        className="mr-2 shrink-0 animate-shimmer border-foreground/20 bg-gradient-to-r from-background via-foreground/10 to-background bg-[length:200%_100%] px-1.5 py-0 text-[10px] font-semibold uppercase tracking-wide text-foreground"
+                        className="shrink-0 animate-shimmer border-foreground/20 bg-gradient-to-r from-background via-foreground/10 to-background bg-[length:200%_100%] px-1.5 py-0 text-[10px] font-semibold uppercase tracking-wide text-foreground"
                     >
                         AI
                     </Badge>
@@ -330,7 +330,7 @@ export const SearchBar = ({
                     }}
                 />
                 <Separator
-                    className="mx-1 h-6"
+                    className="h-6"
                     orientation="vertical"
                 />
                 <CodeMirror
@@ -508,7 +508,7 @@ const AiSearchSubmitButton = ({
                         disabled={!isEnabled}
                         onClick={onClick}
                         className={cn(
-                            "group ml-2 flex h-6 w-6 min-w-6 shrink-0 items-center justify-center rounded-full transition-all duration-300",
+                            "group flex h-6 w-6 min-w-6 shrink-0 items-center justify-center rounded-full transition-all duration-300",
                             isEnabled
                                 ? "cursor-pointer bg-foreground text-background hover:scale-110 hover:shadow-[0_0_12px_rgba(0,0,0,0.3)] dark:hover:shadow-[0_0_12px_rgba(255,255,255,0.3)]"
                                 : "cursor-not-allowed bg-muted text-muted-foreground/50",
