@@ -18,17 +18,17 @@ export const POST = async (request: NextRequest) => {
         );
     }
 
-    const response = await postAiSearch(parsed.data, domain);
+    const response = await postAiSearch(parsed.data, domain, request.signal);
     if (isServiceError(response)) {
         return serviceErrorResponse(response);
     }
     return Response.json(response);
 }
 
-const postAiSearch = (request: AiSearchRequest, domain: string) => sew(() =>
+const postAiSearch = (request: AiSearchRequest, domain: string, signal: AbortSignal) => sew(() =>
     withAuth((session) =>
         withOrgMembership(session, domain, async ({ orgId }) => {
-            const response = await aiSearch(request, orgId);
+            const response = await aiSearch(request, orgId, signal);
             return response;
         }
     ), /* allowSingleTenantUnauthedAccess */ true));

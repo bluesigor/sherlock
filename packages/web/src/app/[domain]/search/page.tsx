@@ -1,5 +1,7 @@
 'use client';
 
+import { executeSearch } from '@/lib/searchExecution';
+
 import {
     ResizableHandle,
     ResizablePanel,
@@ -16,7 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ImperativePanelHandle } from "react-resizable-panels";
-import { aiSearch, getRepos, search } from "../../api/(client)/client";
+import { getRepos } from "../../api/(client)/client";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { ServiceErrorException } from "@/lib/serviceError";
 import { TopBar } from "../components/topBar";
@@ -49,22 +51,15 @@ const SearchPageInternal = () => {
     const domain = useDomain();
 
     const { data: searchResponse, isLoading, isError, error } = useQuery({
-        queryKey: ["search", searchQuery, aiSearchQuery, maxMatchDisplayCount],
-        queryFn: (): Promise<{ data: SearchResponse & { translatedQuery?: string }, durationMs: number }> =>
-            measure(() => aiSearchQuery.length > 0 ?
-                aiSearch({
-                    query: aiSearchQuery,
-                    maxMatchDisplayCount,
-                }, domain) :
-                search({
-                    query: searchQuery,
-                    maxMatchDisplayCount,
-                }, domain), "client.search"),
+        queryKey: ["search", domain, searchQuery, aiSearchQuery, maxMatchDisplayCount],
+        queryFn: ({ signal }): Promise<{ data: SearchResponse & { translatedQuery?: string }, durationMs: number }> =>
+            measure(() => executeSearch(searchQuery, aiSearchQuery, maxMatchDisplayCount, domain, signal), "client.search"),
         select: ({ data, durationMs }) => ({
             ...data,
             durationMs,
         }),
         enabled: searchQuery.length > 0 || aiSearchQuery.length > 0,
+        retry: false,
         refetchOnWindowFocus: false,
     });
 
@@ -183,13 +178,12 @@ const SearchPageInternal = () => {
 
     const onLoadMoreResults = useCallback(() => {
         const url = createPathWithQueryParams(`/${domain}/search`,
-            aiSearchQuery.length > 0 ?
-                [SearchQueryParams.aiQuery, aiSearchQuery] :
-                [SearchQueryParams.query, searchQuery],
+            [SearchQueryParams.aiQuery, aiSearchQuery || null],
+            [SearchQueryParams.query, searchResponse?.translatedQuery ?? searchQuery],
             [SearchQueryParams.maxMatchDisplayCount, `${maxMatchDisplayCount * 2}`],
         )
         router.push(url);
-    }, [maxMatchDisplayCount, router, searchQuery, aiSearchQuery, domain]);
+    }, [maxMatchDisplayCount, router, searchQuery, aiSearchQuery, domain, searchResponse?.translatedQuery]);
 
     return (
         <div className="flex flex-col h-screen overflow-clip">

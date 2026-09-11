@@ -53,7 +53,7 @@ describe('POST /api/search/ai', () => {
 
         const response = await POST(buildRequest({ query: 'find bar in foo', maxMatchDisplayCount: 100 }));
 
-        expect(aiSearchMock).toHaveBeenCalledWith({ query: 'find bar in foo', maxMatchDisplayCount: 100 }, 1);
+        expect(aiSearchMock).toHaveBeenCalledWith({ query: 'find bar in foo', maxMatchDisplayCount: 100 }, 1, expect.anything());
         expect(response.status).toBe(200);
         expect(await response.json()).toEqual(aiSearchResponse);
     });

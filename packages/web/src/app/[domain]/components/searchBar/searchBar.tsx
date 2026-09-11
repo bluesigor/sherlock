@@ -243,9 +243,10 @@ export const SearchBar = ({
 
         const url = createPathWithQueryParams(`/${domain}/search`,
             [SearchQueryParams.aiQuery, query],
+            [SearchQueryParams.query, aiQueryPreview ?? ""],
         );
         router.push(url);
-    }, [domain, router]);
+    }, [domain, router, aiQueryPreview]);
 
     return (
         <div

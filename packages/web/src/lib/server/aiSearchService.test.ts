@@ -250,3 +250,24 @@ describe('translateQuery', () => {
         expect(instructions).not.toContain('omit a prefix');
     });
 });
+
+
+test('forwards cancellation and bounds provider execution', async () => {
+    mockConfiguredModel();
+    generateTextMock.mockResolvedValue({ text: 'TODO' });
+    const { translateQuery } = await import('./aiSearchService');
+    const signal = new AbortController().signal;
+    await translateQuery({ query: 'todos' }, signal);
+    expect(generateTextMock).toHaveBeenLastCalledWith(expect.objectContaining({
+        abortSignal: signal, timeout: 30_000, maxOutputTokens: 1024, maxRetries: 0,
+    }));
+});
+test('does not bill an already cancelled translation', async () => {
+    vi.clearAllMocks();
+    mockConfiguredModel();
+    const { translateQuery } = await import('./aiSearchService');
+    const controller = new AbortController(); controller.abort();
+    const result = await translateQuery({ query: 'todos' }, controller.signal);
+    expect(result).toMatchObject({ errorCode: ErrorCode.AI_TRANSLATION_FAILED });
+    expect(generateTextMock).not.toHaveBeenCalled();
+});

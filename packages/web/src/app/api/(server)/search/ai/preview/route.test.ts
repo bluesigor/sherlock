@@ -48,7 +48,7 @@ describe('POST /api/search/ai/preview', () => {
 
         const response = await POST(buildRequest({ query: 'todos in typescript' }));
 
-        expect(translateQueryMock).toHaveBeenCalledWith({ query: 'todos in typescript' });
+        expect(translateQueryMock).toHaveBeenCalledWith({ query: 'todos in typescript' }, expect.anything());
         expect(response.status).toBe(200);
         expect(await response.json()).toEqual({ translatedQuery: 'TODO lang:typescript' });
     });

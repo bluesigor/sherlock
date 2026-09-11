@@ -21,7 +21,7 @@ const isRemotePath = (path: string) => {
 
 const readConfig = async (configPath: string) => {
     if (isRemotePath(configPath)) {
-        const response = await fetch(configPath);
+        const response = await fetch(configPath, { signal: AbortSignal.timeout(10_000) });
         if (!response.ok) {
             throw new Error(`Failed to fetch config file ${configPath}: ${response.statusText}`);
         }

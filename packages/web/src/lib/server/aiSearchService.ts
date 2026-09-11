@@ -1,3 +1,4 @@
+import { acquireAiRequest } from './aiRequestLimits';
 import { createAnthropic } from '@ai-sdk/anthropic';
 import { createOpenAI } from '@ai-sdk/openai';
 import { generateText } from 'ai';
@@ -52,18 +53,27 @@ const normalizeQuery = (text: string) => text
     .replace(/\s+/g, ' ')
     .trim();
 
-const generateQuery = async (query: string, model: AiModelConfig): Promise<string | ServiceError> => {
+const generateQuery = async (query: string, model: AiModelConfig, signal?: AbortSignal): Promise<string | ServiceError> => {
+    if (signal?.aborted) return aiTranslationFailed("request cancelled");
+    const release = acquireAiRequest();
+    if (isServiceError(release)) return release;
     const translatedQuery = await (async () => {
         try {
             const { text } = await generateText({
                 model: getLanguageModel(model),
                 instructions: SYSTEM_PROMPT,
                 prompt: query,
+                abortSignal: signal,
+                timeout: 30_000,
+                maxOutputTokens: 1024,
+                maxRetries: 0,
             });
             return normalizeQuery(text);
         } catch (error) {
             console.error(`AI query translation failed: ${error}`);
             return undefined;
+        } finally {
+            release();
         }
     })();
 
@@ -77,13 +87,13 @@ const generateQuery = async (query: string, model: AiModelConfig): Promise<strin
 /**
  * Translates a natural language query into a zoekt query without running a search.
  */
-export const translateQuery = async ({ query }: AiPreviewRequest): Promise<AiPreviewResponse | ServiceError> => {
+export const translateQuery = async ({ query }: AiPreviewRequest, signal?: AbortSignal): Promise<AiPreviewResponse | ServiceError> => {
     const model = await getAiModel();
     if (!model) {
         return aiSearchNotConfigured();
     }
 
-    const translatedQuery = await generateQuery(query, model);
+    const translatedQuery = await generateQuery(query, model, signal);
     if (isServiceError(translatedQuery)) {
         return translatedQuery;
     }
@@ -91,8 +101,8 @@ export const translateQuery = async ({ query }: AiPreviewRequest): Promise<AiPre
     return { translatedQuery };
 }
 
-export const aiSearch = async (searchRequest: AiSearchRequest, orgId: number): Promise<AiSearchResponse | ServiceError> => {
-    const translation = await translateQuery({ query: searchRequest.query });
+export const aiSearch = async (searchRequest: AiSearchRequest, orgId: number, signal?: AbortSignal): Promise<AiSearchResponse | ServiceError> => {
+    const translation = await translateQuery({ query: searchRequest.query }, signal);
     if (isServiceError(translation)) {
         return translation;
     }

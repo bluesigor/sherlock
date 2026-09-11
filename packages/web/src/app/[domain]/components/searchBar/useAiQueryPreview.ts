@@ -18,7 +18,7 @@ interface Props {
  */
 export const useAiQueryPreview = ({ query, isEnabled }: Props) => {
     const domain = useDomain();
-    const [preview, setPreview] = useState<string | undefined>(undefined);
+    const [preview, setPreview] = useState<{ query: string; domain: string; text: string } | undefined>(undefined);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -35,7 +35,7 @@ export const useAiQueryPreview = ({ query, isEnabled }: Props) => {
             try {
                 const { translatedQuery } = await previewAiSearch({ query }, domain, abortController.signal);
                 if (!abortController.signal.aborted) {
-                    setPreview(translatedQuery);
+                    setPreview({ query, domain, text: translatedQuery });
                 }
             } catch (_error) {
                 // A preview is a hint; a failed translation simply shows nothing.
@@ -52,5 +52,5 @@ export const useAiQueryPreview = ({ query, isEnabled }: Props) => {
         };
     }, [query, isEnabled, domain]);
 
-    return { preview, isLoading };
+    return { preview: isEnabled && preview?.query === query && preview.domain === domain ? preview.text : undefined, isLoading };
 }

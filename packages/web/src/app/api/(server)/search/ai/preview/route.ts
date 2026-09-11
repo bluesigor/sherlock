@@ -18,17 +18,17 @@ export const POST = async (request: NextRequest) => {
         );
     }
 
-    const response = await postAiPreview(parsed.data, domain);
+    const response = await postAiPreview(parsed.data, domain, request.signal);
     if (isServiceError(response)) {
         return serviceErrorResponse(response);
     }
     return Response.json(response);
 }
 
-const postAiPreview = (request: AiPreviewRequest, domain: string) => sew(() =>
+const postAiPreview = (request: AiPreviewRequest, domain: string, signal: AbortSignal) => sew(() =>
     withAuth((session) =>
         withOrgMembership(session, domain, async () => {
-            const response = await translateQuery(request);
+            const response = await translateQuery(request, signal);
             return response;
         }
     ), /* allowSingleTenantUnauthedAccess */ true));

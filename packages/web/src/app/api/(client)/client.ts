@@ -5,7 +5,7 @@ import { ServiceErrorException } from "@/lib/serviceError";
 import { AiPreviewRequest, AiPreviewResponse, AiSearchModelsResponse, AiSearchRequest, AiSearchResponse, FileSourceRequest, FileSourceResponse, GetVersionResponse, ListRepositoriesResponse, SearchRequest, SearchResponse } from "@/lib/types";
 import { isServiceError } from "@/lib/utils";
 
-export const search = async (body: SearchRequest, domain: string): Promise<SearchResponse> => {
+export const search = async (body: SearchRequest, domain: string, signal?: AbortSignal): Promise<SearchResponse> => {
     const result = await fetch("/api/search", {
         method: "POST",
         headers: {
@@ -13,12 +13,14 @@ export const search = async (body: SearchRequest, domain: string): Promise<Searc
             "X-Org-Domain": domain,
         },
         body: JSON.stringify(body),
+        signal,
     }).then(response => response.json());
 
+    if (isServiceError(result)) throw new ServiceErrorException(result);
     return searchResponseSchema.parse(result);
 }
 
-export const aiSearch = async (body: AiSearchRequest, domain: string): Promise<AiSearchResponse> => {
+export const aiSearch = async (body: AiSearchRequest, domain: string, signal?: AbortSignal): Promise<AiSearchResponse> => {
     const result = await fetch("/api/search/ai", {
         method: "POST",
         headers: {
@@ -26,6 +28,7 @@ export const aiSearch = async (body: AiSearchRequest, domain: string): Promise<A
             "X-Org-Domain": domain,
         },
         body: JSON.stringify(body),
+        signal,
     }).then(response => response.json());
 
     // Surfaced to the UI so that it can tell the user what was tried.
