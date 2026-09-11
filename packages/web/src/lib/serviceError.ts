@@ -6,6 +6,8 @@ export const serviceErrorSchema = z.object({
     statusCode: z.number(),
     errorCode: z.string(),
     message: z.string(),
+    // Error specific context that the UI can surface alongside the message.
+    data: z.record(z.string(), z.unknown()).optional(),
 });
 
 export type ServiceError = z.infer<typeof serviceErrorSchema>;
@@ -19,11 +21,12 @@ export class ServiceErrorException extends Error {
     }
 }
 
-export const serviceErrorResponse = ({ statusCode, errorCode, message }: ServiceError) => {
+export const serviceErrorResponse = ({ statusCode, errorCode, message, data }: ServiceError) => {
     return Response.json({
         statusCode,
         errorCode,
         message,
+        ...(data ? { data } : {}),
     }, {
         status: statusCode,
     });
@@ -109,5 +112,30 @@ export const secretAlreadyExists = (): ServiceError => {
         statusCode: StatusCodes.CONFLICT,
         errorCode: ErrorCode.SECRET_ALREADY_EXISTS,
         message: "Secret already exists",
+    }
+}
+
+export const aiSearchNotConfigured = (): ServiceError => {
+    return {
+        statusCode: StatusCodes.NOT_IMPLEMENTED,
+        errorCode: ErrorCode.AI_SEARCH_NOT_CONFIGURED,
+        message: "AI search is not configured. Add a model to the `models` section of your config file.",
+    }
+}
+
+export const aiTranslationFailed = (reason: string): ServiceError => {
+    return {
+        statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+        errorCode: ErrorCode.AI_TRANSLATION_FAILED,
+        message: `Failed to translate the search query: ${reason}`,
+    }
+}
+
+export const aiSearchFailed = (translatedQuery: string, reason: string): ServiceError => {
+    return {
+        statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+        errorCode: ErrorCode.AI_SEARCH_FAILED,
+        message: `The translated search query failed: ${reason}`,
+        data: { translatedQuery },
     }
 }

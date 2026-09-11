@@ -83,6 +83,13 @@
                 }
             },
             "additionalProperties": false
+        },
+        "models": {
+            "type": "array",
+            "description": "Defines a collection of language models that Sherlock can use for AI search. If omitted or empty, AI search is disabled.",
+            "items": {
+                "$ref": "./model.json"
+            }
         }
     },
     "additionalProperties": false

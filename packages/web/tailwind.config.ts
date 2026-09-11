@@ -86,12 +86,17 @@ const config = {
   				to: {
   					height: '0'
   				}
+  			},
+  			'shimmer': {
+  				'0%': { backgroundPosition: '200% 0' },
+  				'100%': { backgroundPosition: '-200% 0' }
   			}
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
-  			'spin-slow': 'spin 1.5s linear infinite'
+  			'spin-slow': 'spin 1.5s linear infinite',
+  			'shimmer': 'shimmer 2.5s linear infinite'
   		}
   	}
   },

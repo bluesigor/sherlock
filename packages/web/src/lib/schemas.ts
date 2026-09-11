@@ -88,6 +88,34 @@ export const searchResponseSchema = z.object({
     isBranchFilteringEnabled: z.boolean(),
 });
 
+export const aiSearchRequestSchema = z.object({
+    ...searchRequestSchema.shape,
+    // Overrides the raw zoekt query field with a bounded natural-language query,
+    // since every character here is forwarded to a billed LLM call.
+    query: z.string().min(1).max(500),
+});
+
+export const aiSearchResponseSchema = z.object({
+    ...searchResponseSchema.shape,
+    // The zoekt query the natural language query was translated into.
+    translatedQuery: z.string(),
+});
+
+export const aiPreviewRequestSchema = z.object({
+    // Bounded since every character here is forwarded to a billed LLM call.
+    query: z.string().min(1).max(500),
+});
+
+export const aiPreviewResponseSchema = z.object({
+    // The zoekt query the natural language query was translated into.
+    translatedQuery: z.string(),
+});
+
+export const aiSearchModelsResponseSchema = z.array(z.object({
+    id: z.string(),
+    displayName: z.string(),
+}));
+
 export const fileSourceRequestSchema = z.object({
     fileName: z.string(),
     repository: z.string(),

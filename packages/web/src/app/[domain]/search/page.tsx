@@ -9,14 +9,16 @@ import { Separator } from "@/components/ui/separator";
 import useCaptureEvent from "@/hooks/useCaptureEvent";
 import { useNonEmptyQueryParam } from "@/hooks/useNonEmptyQueryParam";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
-import { Repository, SearchQueryParams, SearchResultFile } from "@/lib/types";
+import { Repository, SearchQueryParams, SearchResponse, SearchResultFile } from "@/lib/types";
 import { createPathWithQueryParams, measure } from "@/lib/utils";
 import { InfoCircledIcon, SymbolIcon } from "@radix-ui/react-icons";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ImperativePanelHandle } from "react-resizable-panels";
-import { getRepos, search } from "../../api/(client)/client";
+import { aiSearch, getRepos, search } from "../../api/(client)/client";
+import { ArrowRight, Sparkles } from "lucide-react";
+import { ServiceErrorException } from "@/lib/serviceError";
 import { TopBar } from "../components/topBar";
 import { CodePreviewPanel } from "./components/codePreviewPanel";
 import { FilterPanel } from "./components/filterPanel";
@@ -39,23 +41,30 @@ export default function SearchPage() {
 const SearchPageInternal = () => {
     const router = useRouter();
     const searchQuery = useNonEmptyQueryParam(SearchQueryParams.query) ?? "";
+    const aiSearchQuery = useNonEmptyQueryParam(SearchQueryParams.aiQuery) ?? "";
     const _maxMatchDisplayCount = parseInt(useNonEmptyQueryParam(SearchQueryParams.maxMatchDisplayCount) ?? `${DEFAULT_MAX_MATCH_DISPLAY_COUNT}`);
     const maxMatchDisplayCount = isNaN(_maxMatchDisplayCount) ? DEFAULT_MAX_MATCH_DISPLAY_COUNT : _maxMatchDisplayCount;
     const { setSearchHistory } = useSearchHistory();
     const captureEvent = useCaptureEvent();
     const domain = useDomain();
 
-    const { data: searchResponse, isLoading } = useQuery({
-        queryKey: ["search", searchQuery, maxMatchDisplayCount],
-        queryFn: () => measure(() => search({
-            query: searchQuery,
-            maxMatchDisplayCount,
-        }, domain), "client.search"),
+    const { data: searchResponse, isLoading, isError, error } = useQuery({
+        queryKey: ["search", searchQuery, aiSearchQuery, maxMatchDisplayCount],
+        queryFn: (): Promise<{ data: SearchResponse & { translatedQuery?: string }, durationMs: number }> =>
+            measure(() => aiSearchQuery.length > 0 ?
+                aiSearch({
+                    query: aiSearchQuery,
+                    maxMatchDisplayCount,
+                }, domain) :
+                search({
+                    query: searchQuery,
+                    maxMatchDisplayCount,
+                }, domain), "client.search"),
         select: ({ data, durationMs }) => ({
             ...data,
             durationMs,
         }),
-        enabled: searchQuery.length > 0,
+        enabled: searchQuery.length > 0 || aiSearchQuery.length > 0,
         refetchOnWindowFocus: false,
     });
 
@@ -148,6 +157,14 @@ const SearchPageInternal = () => {
         }
     }, [searchResponse]);
 
+    // A failed AI search carries the query that was attempted, so that the user
+    // can see what the translation produced instead of a bare error.
+    const attemptedQuery = useMemo(() => {
+        const serviceError = error instanceof ServiceErrorException ? error.serviceError : undefined;
+        const translatedQuery = serviceError?.data?.translatedQuery;
+        return typeof translatedQuery === 'string' ? translatedQuery : undefined;
+    }, [error]);
+
     const isMoreResultsButtonVisible = useMemo(() => {
         return totalMatchCount > maxMatchDisplayCount;
     }, [totalMatchCount, maxMatchDisplayCount]);
@@ -166,11 +183,13 @@ const SearchPageInternal = () => {
 
     const onLoadMoreResults = useCallback(() => {
         const url = createPathWithQueryParams(`/${domain}/search`,
-            [SearchQueryParams.query, searchQuery],
+            aiSearchQuery.length > 0 ?
+                [SearchQueryParams.aiQuery, aiSearchQuery] :
+                [SearchQueryParams.query, searchQuery],
             [SearchQueryParams.maxMatchDisplayCount, `${maxMatchDisplayCount * 2}`],
         )
         router.push(url);
-    }, [maxMatchDisplayCount, router, searchQuery, domain]);
+    }, [maxMatchDisplayCount, router, searchQuery, aiSearchQuery, domain]);
 
     return (
         <div className="flex flex-col h-screen overflow-clip">
@@ -178,12 +197,39 @@ const SearchPageInternal = () => {
             <div className="sticky top-0 left-0 right-0 z-10">
                 <TopBar
                     defaultSearchQuery={searchQuery}
+                    defaultAiSearchQuery={aiSearchQuery}
                     domain={domain}
                 />
                 <Separator />
             </div>
 
-            {isLoading ? (
+            {searchResponse?.translatedQuery && (
+                <div className="flex flex-row flex-wrap items-center gap-x-2 gap-y-1 border-b border-foreground/10 bg-foreground/5 px-3 py-2 text-sm">
+                    <Sparkles className="h-4 w-4 shrink-0 text-foreground/70" />
+                    <span className="italic text-muted-foreground">{aiSearchQuery}</span>
+                    <ArrowRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                    <code className="break-all font-mono font-medium text-foreground">{searchResponse.translatedQuery}</code>
+                </div>
+            )}
+
+            {isError && aiSearchQuery.length > 0 ? (
+                <div className="flex flex-col items-center justify-center h-full gap-3 px-6">
+                    <p className="font-semibold text-center">AI search unavailable</p>
+                    {attemptedQuery ? (
+                        <>
+                            <div className="flex flex-row flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-md border border-foreground/10 bg-foreground/5 px-3 py-2 text-sm">
+                                <span className="text-muted-foreground">Tried:</span>
+                                <code className="break-all font-mono font-medium text-foreground">{attemptedQuery}</code>
+                            </div>
+                            <p className="max-w-xl text-sm text-muted-foreground text-center">
+                                {`...but the underlying search failed: ${(error as ServiceErrorException).serviceError.message}`}
+                            </p>
+                        </>
+                    ) : (
+                        <p className="text-sm text-muted-foreground text-center">Try again, rephrase your description, or use a normal search.</p>
+                    )}
+                </div>
+            ) : isLoading ? (
                 <div className="flex flex-col items-center justify-center h-full gap-2">
                     <SymbolIcon className="h-6 w-6 animate-spin" />
                     <p className="font-semibold text-center">Searching...</p>

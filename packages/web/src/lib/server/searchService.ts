@@ -8,7 +8,7 @@ import { zoektFetch } from "./zoektClient";
 
 // List of supported query prefixes in zoekt.
 // @see : https://github.com/sourcebot-dev/zoekt/blob/main/query/parse.go#L417
-enum zoektPrefixes {
+export enum zoektPrefixes {
     archived = "archived:",
     branchShort = "b:",
     branch =  "branch:",
