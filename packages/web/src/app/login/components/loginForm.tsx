@@ -9,15 +9,10 @@ import { Card } from "@/components/ui/card";
 import { cn, getCodeHostIcon } from "@/lib/utils";
 import { MagicLinkForm } from "./magicLinkForm";
 import { CredentialsForm } from "./credentialsForm";
-import { SourcebotLogo } from "@/app/components/sourcebotLogo";
+import { SherlockLogo } from "@/app/components/sherlockLogo";
 import { TextSeparator } from "@/app/components/textSeparator";
 import useCaptureEvent from "@/hooks/useCaptureEvent";
-import DemoCard from "@/app/[domain]/onboard/components/demoCard";
-import Link from "next/link";
-import { env } from "@/env.mjs";
 
-const TERMS_OF_SERVICE_URL = "https://sourcebot.dev/terms";
-const PRIVACY_POLICY_URL = "https://sourcebot.dev/privacy";
 
 interface LoginFormProps {
     callbackUrl?: string;
@@ -53,14 +48,12 @@ export const LoginForm = ({ callbackUrl, error, enabledMethods }: LoginFormProps
     return (
         <div className="flex flex-col items-center justify-center w-full">
             <div className="mb-6 flex flex-col items-center">
-                <SourcebotLogo
+                <SherlockLogo
                     className="h-12 sm:h-16"
                 />
                 <h2 className="text-lg font-bold text-center">Sign in to your account</h2>
             </div>
-            <div className="w-full sm:w-[500px] max-w-[500px]">
-                <DemoCard />
-            </div>
+
             <Card className="flex flex-col items-center border p-6 sm:p-12 rounded-lg gap-4 sm:gap-6 w-full sm:w-[500px] max-w-[500px] bg-background">
                 {error && (
                     <div className="text-sm text-destructive text-center text-wrap border p-2 rounded-md border-destructive">
@@ -104,9 +97,7 @@ export const LoginForm = ({ callbackUrl, error, enabledMethods }: LoginFormProps
                     ]}
                 />
             </Card>
-            {env.NEXT_PUBLIC_SOURCEBOT_CLOUD_ENVIRONMENT !== undefined && (
-                <p className="text-xs text-muted-foreground mt-8">By signing in, you agree to the <Link className="underline" href={TERMS_OF_SERVICE_URL} target="_blank">Terms of Service</Link> and <Link className="underline" href={PRIVACY_POLICY_URL} target="_blank">Privacy Policy</Link>.</p>
-            )}
+
         </div>
     )
 }

@@ -1,13 +1,13 @@
-# fly.toml app configuration file generated for sourcebot on 2024-09-06T11:03:58-07:00
+# fly.toml app configuration file generated for sherlock on 2024-09-06T11:03:58-07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'sourcebot'
+# Set a unique Fly app name owned by your deployment.
 primary_region = 'sjc'
 
 [build]
-  image = "ghcr.io/sourcebot-dev/sourcebot:main"
+  dockerfile = "Dockerfile"
 
 [http_service]
   internal_port = 3000
@@ -23,6 +23,6 @@ primary_region = 'sjc'
   cpus = 4
 
 [mounts]
-  source = "sourcebot_data"
+  source = "sherlock_data"
   destination = "/data"
   initial_size = "60GB"

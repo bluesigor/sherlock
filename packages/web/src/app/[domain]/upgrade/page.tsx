@@ -1,4 +1,4 @@
-import { SourcebotLogo } from "@/app/components/sourcebotLogo";
+import { SherlockLogo } from "@/app/components/sherlockLogo";
 import { Footer } from "@/app/components/footer";
 import { OrgSelector } from "../components/orgSelector";
 import { EnterpriseUpgradeCard } from "./components/enterpriseUpgradeCard";
@@ -39,7 +39,7 @@ export default async function Upgrade({ params: { domain } }: { params: { domain
             )}
             <LogoutEscapeHatch className="absolute top-0 right-0 p-4 sm:p-12" />
             <div className="flex flex-col items-center">
-                <SourcebotLogo
+                <SherlockLogo
                     className="h-16 mb-2"
                     size="small"
                 />
@@ -51,8 +51,8 @@ export default async function Upgrade({ params: { domain } }: { params: { domain
                 </h1>
                 <p className="text-sm text-muted-foreground mb-5">
                     {isTrialing ?
-                        "Upgrade now to get the most out of Sourcebot." :
-                        "Please upgrade to continue using Sourcebot."
+                        "Upgrade now to get the most out of Sherlock." :
+                        "Please upgrade to continue using Sherlock."
                     }
                 </p>
             </div>

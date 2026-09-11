@@ -5,7 +5,7 @@ import { SINGLE_TENANT_USER_ID, SINGLE_TENANT_ORG_ID, SINGLE_TENANT_ORG_DOMAIN, 
 import { readFile } from 'fs/promises';
 import { watch } from 'fs';
 import stripJsonComments from 'strip-json-comments';
-import { SourcebotConfig } from "@sourcebot/schemas/v3/index.type";
+import { SherlockConfig } from "@sourcebot/schemas/v3/index.type";
 import { ConnectionConfig } from '@sourcebot/schemas/v3/connection.type';
 import { indexSchema } from '@sourcebot/schemas/v3/index.schema';
 import Ajv from 'ajv';
@@ -36,8 +36,8 @@ const scheduleDeclarativeConfigSync = async (configPath: string) => {
             });
         }
     })();
-    
-    const config = JSON.parse(stripJsonComments(configContent)) as SourcebotConfig;
+
+    const config = JSON.parse(stripJsonComments(configContent)) as SherlockConfig;
     const isValidConfig = ajv.validate(indexSchema, config);
     if (!isValidConfig) {
         throw new Error(`Config file '${configPath}' is invalid: ${ajv.errorsText(ajv.errors)}`);

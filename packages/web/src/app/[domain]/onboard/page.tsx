@@ -22,7 +22,7 @@ interface OnboardProps {
 
 export default async function Onboard({ params, searchParams }: OnboardProps) {
     const org = await getOrgFromDomain(params.domain);
-    
+
     if (!org) {
         notFound();
     }
@@ -66,7 +66,7 @@ export default async function Onboard({ params, searchParams }: OnboardProps) {
                 <>
                     <OnboardHeader
                         title="Invite your team"
-                        description="Invite your team to get the most out of Sourcebot."
+                        description="Invite your team to get the most out of Sherlock."
                         step={step as OnboardingSteps}
                     />
                     <InviteTeam

@@ -1,7 +1,5 @@
+import { SherlockLogo } from "@/app/components/sherlockLogo";
 import Link from "next/link";
-import Image from "next/image";
-import logoLight from "@/public/sb_logo_light.png";
-import logoDark from "@/public/sb_logo_dark.png";
 import { SearchBar } from "./searchBar";
 import { SettingsDropdown } from "./settingsDropdown";
 
@@ -21,16 +19,7 @@ export const TopBar = ({
                     href={`/${domain}`}
                     className="shrink-0 cursor-pointer"
                 >
-                    <Image
-                        src={logoDark}
-                        className="h-4 w-auto hidden dark:block"
-                        alt={"Sourcebot logo"}
-                    />
-                    <Image
-                        src={logoLight}
-                        className="h-4 w-auto block dark:hidden"
-                        alt={"Sourcebot logo"}
-                    />
+                    <SherlockLogo className="h-6" />
                 </Link>
                 <SearchBar
                     size="sm"

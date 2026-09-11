@@ -74,7 +74,7 @@ export function OrgCreateForm({ rootDomain }: OrgCreateFormProps) {
                         render={({ field }) => (
                             <FormItem className="flex flex-col gap-2">
                                 <FormLabel>Organization Name</FormLabel>
-                                <FormDescription>{`Your organization's visible name within Sourcebot. For example, the name of your company or department.`}</FormDescription>
+                                <FormDescription>{`Your organization's visible name within Sherlock. For example, the name of your company or department.`}</FormDescription>
                                 <FormControl>
                                     <Input
                                         placeholder="Aperture Labs"
@@ -96,7 +96,7 @@ export function OrgCreateForm({ rootDomain }: OrgCreateFormProps) {
                         render={({ field }) => (
                             <FormItem className="flex flex-col gap-2">
                                 <FormLabel>Organization URL</FormLabel>
-                                <FormDescription>{`Your organization's URL namespace. This is where your organization's Sourcebot instance will be accessible.`}</FormDescription>
+                                <FormDescription>{`Your organization's URL namespace. This is where your organization's Sherlock instance will be accessible.`}</FormDescription>
                                 <FormControl>
                                     <div className="flex items-center w-full">
                                         <div className="flex-shrink-0 text-sm text-muted-foreground bg-backgroundSecondary rounded-md rounded-r-none border border-r-0 px-3 py-[9px]">{rootDomain}/</div>

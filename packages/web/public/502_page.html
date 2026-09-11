@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sourcebot - Server Down</title>
+    <title>Sherlock - Server Down</title>
     <style>
         :root {
             --background: #0d1117;
@@ -12,7 +12,7 @@
             --secondary-bg: #161b22;
             --border: #30363d;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             background-color: var(--background);
@@ -23,7 +23,7 @@
             flex-direction: column;
             min-height: 100vh;
         }
-        
+
         main {
             flex: 1;
             display: flex;
@@ -33,7 +33,7 @@
             padding: 40px 20px;
             text-align: center;
         }
-        
+
         .server-down-container {
             max-width: 600px;
             background-color: var(--secondary-bg);
@@ -42,41 +42,41 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             border: 1px solid var(--border);
         }
-        
+
         .logo {
             font-size: 64px;
             font-weight: bold;
             margin-bottom: 32px;
         }
-        
+
         .logo-source {
             color: var(--text);
         }
-        
+
         .logo-bot {
             color: var(--accent);
         }
-        
+
         .dot {
             color: var(--accent);
         }
-        
+
         h1 {
             font-size: 2.5rem;
             margin-bottom: 16px;
         }
-        
+
         .highlight {
             color: var(--accent);
         }
-        
+
         p {
             font-size: 1.1rem;
             line-height: 1.6;
             margin-bottom: 24px;
             opacity: 0.9;
         }
-        
+
         .status-code {
             font-family: monospace;
             background-color: rgba(255, 255, 255, 0.1);
@@ -84,7 +84,7 @@
             border-radius: 4px;
             font-weight: bold;
         }
-        
+
         .retry-btn {
             background-color: var(--accent);
             color: white;
@@ -97,11 +97,11 @@
             transition: background-color 0.2s;
             margin-top: 24px;
         }
-        
+
         .retry-btn:hover {
             background-color: #8a4dff;
         }
-        
+
         footer {
             padding: 16px;
             text-align: center;
@@ -110,13 +110,13 @@
             opacity: 0.7;
             margin-top: auto;
         }
-        
+
         footer a {
             color: var(--text);
             margin: 0 12px;
             text-decoration: none;
         }
-        
+
         footer a:hover {
             text-decoration: underline;
             color: var(--accent);
@@ -127,16 +127,15 @@
     <main>
         <div class="server-down-container">
             <div class="logo">
-                <span class="logo-source">Source</span><span class="logo-bot">bot</span><span class="dot">.</span>
+                <span class="logo-source">Sherlock</span>
             </div>
-            
+
             <p>Our servers are currently down. We're working to get everything back online as quickly as possible, please try again later.</p>
         </div>
     </main>
-    
+
     <footer>
-        <a href="https://sourcebot.dev">About</a>
-        <a href="mailto:team@sourcebot.dev">Contact Us</a>
+        <span>Contact your instance administrator for help.</span>
     </footer>
 </body>
 </html>

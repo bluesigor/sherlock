@@ -10,7 +10,7 @@ import { ArrowLeft } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useState, Suspense } from "react"
 import VerificationFailed from "./verificationFailed"
-import { SourcebotLogo } from "@/app/components/sourcebotLogo"
+import { SherlockLogo } from "@/app/components/sherlockLogo"
 import useCaptureEvent from "@/hooks/useCaptureEvent"
 import { Footer } from "@/app/components/footer"
 
@@ -46,7 +46,7 @@ function VerifyPageContent() {
             <div className="flex-1 flex flex-col items-center p-4 sm:p-12 w-full bg-backgroundSecondary">
                 <div className="w-full max-w-md">
                     <div className="flex justify-center mb-6">
-                        <SourcebotLogo className="h-16" size="large" />
+                        <SherlockLogo className="h-16" size="large" />
                     </div>
                     <Card className="w-full shadow-lg border-muted/40">
                         <CardHeader className="space-y-1">
@@ -89,8 +89,8 @@ function VerifyPageContent() {
                     <div className="mt-8 text-center text-sm text-muted-foreground">
                         <p>
                             Having trouble?{" "}
-                            <a href="mailto:team@sourcebot.dev" className="text-primary hover:underline">
-                                Contact support
+                            <a href="/about#help" className="text-primary hover:underline">
+                                Get help
                             </a>
                         </p>
                     </div>
@@ -106,7 +106,7 @@ function LoadingVerifyPage() {
         <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-background to-muted/30">
             <div className="w-full max-w-md">
                 <div className="flex justify-center mb-6">
-                    <SourcebotLogo className="h-16" size="large" />
+                    <SherlockLogo className="h-16" size="large" />
                 </div>
                 <Card className="w-full shadow-lg border-muted/40">
                     <CardHeader className="space-y-1">

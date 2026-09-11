@@ -68,7 +68,7 @@ export function ChangeOrgDomainCard({ orgDomain, currentUserRole, rootDomain }: 
                     <CardTitle className="flex items-center gap-2">
                         Organization URL
                     </CardTitle>
-                    <CardDescription>{`Your organization's URL namespace. This is where your organization's Sourcebot instance will be accessible.`}</CardDescription>
+                    <CardDescription>{`Your organization's URL namespace. This is where your organization's Sherlock instance will be accessible.`}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>

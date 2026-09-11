@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { AlertCircle } from "lucide-react"
-import { SourcebotLogo } from "@/app/components/sourcebotLogo"
+import { SherlockLogo } from "@/app/components/sherlockLogo"
 import { useRouter } from "next/navigation"
 
 export default function VerificationFailed() {
@@ -12,7 +12,7 @@ export default function VerificationFailed() {
     <div className="flex min-h-screen flex-col items-center justify-center bg-[#111318] text-white">
       <div className="w-full max-w-md rounded-lg bg-[#1A1D24] p-8 shadow-lg">
         <div className="mb-6 flex justify-center">
-          <SourcebotLogo />
+          <SherlockLogo />
         </div>
 
         <div className="mb-6 text-center">
@@ -31,11 +31,11 @@ export default function VerificationFailed() {
       </div>
 
       <div className="mt-8 flex gap-6 text-sm text-gray-500">
-        <a href="https://www.sourcebot.dev" className="hover:text-gray-300">
+        <a href="/about#help" className="hover:text-gray-300">
           About
         </a>
-        <a href="mailto:team@sourcebot.dev" className="hover:text-gray-300">
-          Contact Us
+        <a href="/about#help" className="hover:text-gray-300">
+          Help
         </a>
       </div>
     </div>

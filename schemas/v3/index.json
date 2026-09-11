@@ -1,17 +1,17 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
-    "title": "SourcebotConfig",
+    "title": "SherlockConfig",
     "definitions": {
         "Settings": {
             "type": "object",
-            "description": "Defines the globabl settings for Sourcebot.",
+            "description": "Defines the globabl settings for Sherlock.",
             "properties": {
                 "maxFileSize": {
                     "type": "number",
                     "description": "The maximum size of a file (in bytes) to be indexed. Files that exceed this maximum will not be indexed. Defaults to 2MB.",
                     "minimum": 1
-                    
+
                 },
                 "maxTrigramCount": {
                     "type": "number",
@@ -76,7 +76,7 @@
         },
         "connections": {
             "type": "object",
-            "description": "Defines a collection of connections from varying code hosts that Sourcebot should sync with. This is only available in single-tenancy mode.",
+            "description": "Defines a collection of connections from varying code hosts that Sherlock should sync with. This is only available in single-tenancy mode.",
             "patternProperties": {
                 "^[a-zA-Z0-9_-]+$": {
                     "$ref": "./connection.json"

@@ -22,7 +22,7 @@ export const ImportSecretCard = ({ className }: ImportSecretCardProps) => {
             <Card className={cn(className)}>
                 <CardHeader>
                     <CardTitle>Import a new secret</CardTitle>
-                    <CardDescription>Import a secret from a code host to allow Sourcebot to sync private repositories.</CardDescription>
+                    <CardDescription>Import a secret from a code host to allow Sherlock to sync private repositories.</CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-row gap-4 w-full justify-center">
                     <CodeHostIconButton

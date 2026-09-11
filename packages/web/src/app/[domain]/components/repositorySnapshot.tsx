@@ -47,7 +47,7 @@ export function RepositorySnapshot({ authEnabled }: { authEnabled: boolean }) {
             <EmptyRepoState domain={domain} authEnabled={authEnabled} />
         )
     }
- 
+
     const indexedRepos = repos.filter((repo) => repo.repoIndexingStatus === RepoIndexingStatus.INDEXED);
     return (
         <div className="flex flex-col items-center gap-3">
@@ -84,7 +84,7 @@ function EmptyRepoState({ domain, authEnabled }: { domain: string, authEnabled: 
                         ) : (
                             <>
                                 Create a {" "}
-                                <Link href={`https://docs.sourcebot.dev/self-hosting`} className="text-blue-500 hover:underline inline-flex items-center gap-1" target="_blank">
+                                <Link href={`/about#help`} className="text-blue-500 hover:underline inline-flex items-center gap-1" target="_blank">
                                     configuration file
                                 </Link>{" "}
                                 to start indexing repositories

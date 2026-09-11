@@ -77,7 +77,7 @@ export const InviteTeam = ({ nextStep }: InviteTeamProps) => {
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <CardContent className="space-y-4">
                         <FormLabel>Email Address</FormLabel>
-                        <FormDescription>{`Invite members to access your organization's Sourcebot instance.`}</FormDescription>
+                        <FormDescription>{`Invite members to access your organization's Sherlock instance.`}</FormDescription>
                         {form.watch('emails').map((_, index) => (
                             <FormField
                                 key={index}

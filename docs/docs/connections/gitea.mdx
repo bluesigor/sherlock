@@ -3,7 +3,7 @@ title: Linking code from Gitea
 sidebarTitle: Gitea
 ---
 
-Sourcebot can sync code from Gitea Cloud, and self-hosted.
+Sherlock can sync code from Gitea Cloud, and self-hosted.
 
 ## Examples
 
@@ -95,12 +95,12 @@ Next, provide the access token via the `token` property, either as an environmen
         }
         ```
 
-        2. Pass this environment variable each time you run Sourcebot:
+        2. Pass this environment variable each time you run Sherlock:
         ```bash
         docker run \
             -e GITEA_TOKEN=<PAT> \
             /* additional args */ \
-            ghcr.io/sourcebot-dev/sourcebot:latest
+            sherlock:local
         ```
     </Tab>
 
@@ -141,7 +141,7 @@ To connect to a custom Gitea deployment, provide the `url` property to your conf
 ## Schema reference
 
 <Accordion title="Reference">
-[schemas/v3/gitea.json](https://github.com/sourcebot-dev/sourcebot/blob/main/schemas/v3/gitea.json)
+[schemas/v3/gitea.json](https://github.com/sourcebot-dev/sourcebot/blob/c201a5e1a976002c565f21fb723c4ad51ef38000/schemas/v3/gitea.json)
 
 ```json
 {

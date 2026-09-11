@@ -6,6 +6,10 @@ import { SINGLE_TENANT_ORG_DOMAIN } from '@/lib/constants'
 export async function middleware(request: NextRequest) {
     const url = request.nextUrl.clone();
 
+    if (url.pathname === "/about" || url.pathname === "/icon.svg") {
+        return NextResponse.next();
+    }
+
     if (env.SOURCEBOT_TENANCY_MODE !== 'single') {
         return NextResponse.next();
     }
@@ -35,6 +39,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
     // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
     matcher: [
-        '/((?!api|_next/static|ingest|_next/image|favicon.ico|sitemap.xml|robots.txt|sb_logo_light_large.png|arrow.png|placeholder_avatar.png).*)',
+        '/((?!api|_next/static|ingest|_next/image|favicon.ico|sitemap.xml|robots.txt|arrow.png|placeholder_avatar.png).*)',
     ],
 }

@@ -3,7 +3,6 @@ import {
     Container,
     Head,
     Html,
-    Img,
     Preview,
     Section,
     Tailwind,
@@ -16,28 +15,21 @@ interface MagicLinkEmailProps {
 }
 
 export const MagicLinkEmail = ({
-    baseUrl,
     token,
 }: MagicLinkEmailProps) => (
     <Html>
         <Head />
-        <Preview>Use this code {token} to log in to Sourcebot</Preview>
+        <Preview>Use this code {token} to log in to Sherlock</Preview>
         <Tailwind>
             <Body className="bg-white font-sans m-0 p-0">
                 <Container className="mx-auto max-w-[600px] p-6">
                     <Section className="mb-4">
-                        <Img
-                            src={`${baseUrl}/sb_logo_light_large.png`}
-                            alt="Sourcebot Logo"
-                            width="auto"
-                            height="40"
-                            className="mx-0"
-                        />
+                        <Text className="text-2xl font-bold text-black">Sherlock</Text>
                     </Section>
 
                     <Section className="mb-4">
                         <Text className="text-base text-black">
-                            Use the code below to log in to Sourcebot.
+                            Use the code below to log in to Sherlock.
                         </Text>
                     </Section>
 

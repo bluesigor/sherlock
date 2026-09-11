@@ -69,7 +69,7 @@ export function PostHogProvider({ children, disabled }: PostHogProviderProps) {
     }, [disabled]);
 
     useEffect(() => {
-        if (!session) {
+        if (disabled || !env.NEXT_PUBLIC_POSTHOG_PAPIK || !session) {
             return;
         }
 
@@ -82,7 +82,11 @@ export function PostHogProvider({ children, disabled }: PostHogProviderProps) {
         } else {
             console.debug("PostHog identify skipped");
         }
-    }, [session]);
+    }, [session, disabled]);
+
+    if (disabled) {
+        return <>{children}</>;
+    }
 
     return (
         <PHProvider client={posthog}>

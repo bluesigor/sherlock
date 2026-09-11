@@ -1,7 +1,7 @@
 {
     "$schema": "https://mintlify.com/docs.json",
     "theme": "mint",
-    "name": "Sourcebot",
+    "name": "Sherlock",
     "colors": {
         "primary": "#851EE7",
         "light": "#FFFFFF",
@@ -66,8 +66,7 @@
                     },
                     {
                         "group": "Security",
-                        "pages": [
-                        ]
+                        "pages": []
                     },
                     {
                         "group": "Upgrade",
@@ -76,45 +75,12 @@
                         ]
                     }
                 ]
-            },
-            {
-                "anchor": "Changelog",
-                "href": "https://sourcebot.dev/changelog",
-                "icon": "list-check"
-            },
-            {
-                "anchor": "Support",
-                "href": "https://github.com/sourcebot-dev/sourcebot/discussions/categories/support",
-                "icon": "life-ring"
             }
         ]
     },
     "logo": {
-        "light": "/logo/light.png",
-        "dark": "/logo/dark.png"
-    },
-    "navbar": {
-        "links": [
-            {
-                "label": "GitHub",
-                "href": "https://github.com/sourcebot-dev/sourcebot"
-            }
-        ],
-        "primary": {
-            "type": "button",
-            "label": "Sourcebot Cloud",
-            "href": "https://app.sourcebot.dev"
-        }
-    },
-    "footer": {
-        "socials": {
-            "github": "https://github.com/sourcebot-dev/sourcebot"
-        }
-    },
-    "integrations": {
-        "posthog": {
-            "apiKey": "phc_DBGufjG0rkj3OEhuTcZ04xfeZB6eDhO7dP8ZCnqH7K7"
-        }
+        "light": "/logo/light.svg",
+        "dark": "/logo/dark.svg"
     },
     "appearance": {
         "default": "dark",

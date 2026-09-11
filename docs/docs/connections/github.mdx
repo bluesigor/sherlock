@@ -3,7 +3,7 @@ title: Linking code from GitHub
 sidebarTitle: GitHub
 ---
 
-Sourcebot can sync code from GitHub.com, GitHub Enterprise Server, and GitHub Enterprise Cloud.
+Sherlock can sync code from GitHub.com, GitHub Enterprise Server, and GitHub Enterprise Cloud.
 
 ## Examples
 
@@ -86,7 +86,7 @@ Sourcebot can sync code from GitHub.com, GitHub Enterprise Server, and GitHub En
                     // repos that are less than 1MB (in bytes)...
                     "min": 1048576,
                     // or repos greater than 100MB (in bytes)
-                    "max": 104857600 
+                    "max": 104857600
                 },
                 // repos with topics that match these glob patterns
                 "topics": [
@@ -124,12 +124,12 @@ Next, provide the PAT via the `token` property, either as an environment variabl
         }
         ```
 
-        2. Pass this environment variable each time you run Sourcebot:
+        2. Pass this environment variable each time you run Sherlock:
         ```bash
         docker run \
             -e GITHUB_TOKEN=<PAT> \
             /* additional args */ \
-            ghcr.io/sourcebot-dev/sourcebot:latest
+            sherlock:local
         ```
     </Tab>
 
@@ -170,7 +170,7 @@ To connect to a GitHub host other than `github.com`, provide the `url` property 
 ## Schema reference
 
 <Accordion title="Reference">
-[schemas/v3/github.json](https://github.com/sourcebot-dev/sourcebot/blob/main/schemas/v3/github.json)
+[schemas/v3/github.json](https://github.com/sourcebot-dev/sourcebot/blob/c201a5e1a976002c565f21fb723c4ad51ef38000/schemas/v3/github.json)
 
 ```json
 {

@@ -17,10 +17,10 @@ body:
       required: true
   - type: textarea
     attributes:
-      label: Sourcebot deployment information
-      description: 
+      label: Sherlock deployment information
+      description:
       value: |
-        Sourcebot version (e.g. v3.0.1): 
+        Sherlock version (e.g. v3.0.1):
     validations:
       required: true
   - type: textarea

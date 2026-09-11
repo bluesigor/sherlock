@@ -1,12 +1,12 @@
 // THIS IS A AUTO-GENERATED FILE. DO NOT MODIFY MANUALLY!
 
 /**
- * This interface was referenced by `SourcebotConfigurationSchema`'s JSON-Schema
+ * This interface was referenced by `SherlockConfigurationSchema`'s JSON-Schema
  * via the `definition` "Repos".
  */
 export type Repos = GitHubConfig | GitLabConfig | GiteaConfig | GerritConfig | LocalConfig | GitConfig;
 /**
- * This interface was referenced by `SourcebotConfigurationSchema`'s JSON-Schema
+ * This interface was referenced by `SherlockConfigurationSchema`'s JSON-Schema
  * via the `definition` "Token".
  */
 export type Token =
@@ -19,20 +19,20 @@ export type Token =
     };
 
 /**
- * A Sourcebot configuration file outlines which repositories Sourcebot should sync and index.
+ * A Sherlock configuration file outlines which repositories Sherlock should sync and index.
  */
-export interface SourcebotConfigurationSchema {
+export interface SherlockConfigurationSchema {
   $schema?: string;
   settings?: Settings;
   /**
-   * Defines a collection of repositories from varying code hosts that Sourcebot should sync with.
+   * Defines a collection of repositories from varying code hosts that Sherlock should sync with.
    */
   repos?: Repos[];
 }
 /**
  * Global settings. These settings are applied to all repositories.
  *
- * This interface was referenced by `SourcebotConfigurationSchema`'s JSON-Schema
+ * This interface was referenced by `SherlockConfigurationSchema`'s JSON-Schema
  * via the `definition` "Settings".
  */
 export interface Settings {
@@ -58,7 +58,7 @@ export interface Settings {
   resyncInterval?: number;
 }
 /**
- * This interface was referenced by `SourcebotConfigurationSchema`'s JSON-Schema
+ * This interface was referenced by `SherlockConfigurationSchema`'s JSON-Schema
  * via the `definition` "GitHubConfig".
  */
 export interface GitHubConfig {
@@ -135,7 +135,7 @@ export interface GitHubConfig {
 /**
  * The revisions (branches, tags) that should be included when indexing. The default branch (HEAD) is always indexed.
  *
- * This interface was referenced by `SourcebotConfigurationSchema`'s JSON-Schema
+ * This interface was referenced by `SherlockConfigurationSchema`'s JSON-Schema
  * via the `definition` "GitRevisions".
  */
 export interface GitRevisions {
@@ -149,7 +149,7 @@ export interface GitRevisions {
   tags?: string[];
 }
 /**
- * This interface was referenced by `SourcebotConfigurationSchema`'s JSON-Schema
+ * This interface was referenced by `SherlockConfigurationSchema`'s JSON-Schema
  * via the `definition` "GitLabConfig".
  */
 export interface GitLabConfig {
@@ -215,7 +215,7 @@ export interface GitLabConfig {
   revisions?: GitRevisions;
 }
 /**
- * This interface was referenced by `SourcebotConfigurationSchema`'s JSON-Schema
+ * This interface was referenced by `SherlockConfigurationSchema`'s JSON-Schema
  * via the `definition` "GiteaConfig".
  */
 export interface GiteaConfig {
@@ -267,7 +267,7 @@ export interface GiteaConfig {
   revisions?: GitRevisions;
 }
 /**
- * This interface was referenced by `SourcebotConfigurationSchema`'s JSON-Schema
+ * This interface was referenced by `SherlockConfigurationSchema`'s JSON-Schema
  * via the `definition` "GerritConfig".
  */
 export interface GerritConfig {
@@ -291,7 +291,7 @@ export interface GerritConfig {
   };
 }
 /**
- * This interface was referenced by `SourcebotConfigurationSchema`'s JSON-Schema
+ * This interface was referenced by `SherlockConfigurationSchema`'s JSON-Schema
  * via the `definition` "LocalConfig".
  */
 export interface LocalConfig {
@@ -315,7 +315,7 @@ export interface LocalConfig {
   };
 }
 /**
- * This interface was referenced by `SourcebotConfigurationSchema`'s JSON-Schema
+ * This interface was referenced by `SherlockConfigurationSchema`'s JSON-Schema
  * via the `definition` "GitConfig".
  */
 export interface GitConfig {

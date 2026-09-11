@@ -5,7 +5,7 @@ if [ "$DATABASE_URL" = "postgresql://postgres@localhost:5432/sourcebot" ]; then
     DATABASE_EMBEDDED="true"
 fi
 
-echo -e "\e[34m[Info] Sourcebot version: $NEXT_PUBLIC_SOURCEBOT_VERSION\e[0m"
+echo -e "\e[34m[Info] Sherlock version: $NEXT_PUBLIC_SOURCEBOT_VERSION\e[0m"
 
 # If we don't have a PostHog key, then we need to disable telemetry.
 if [ -z "$NEXT_PUBLIC_POSTHOG_PAPIK" ]; then
@@ -90,10 +90,10 @@ FIRST_RUN_FILE="$DATA_CACHE_DIR/.installedv3"
 if [ ! -f "$FIRST_RUN_FILE" ]; then
     touch "$FIRST_RUN_FILE"
     export SOURCEBOT_INSTALL_ID=$(uuidgen)
-    
+
     # If this is our first run, send a `install` event to PostHog
     # (if telemetry is enabled)
-    if [ "$SOURCEBOT_TELEMETRY_DISABLED" = "false" ]; then
+    if [ "$SOURCEBOT_TELEMETRY_DISABLED" = "false" ] && [ -n "$NEXT_PUBLIC_POSTHOG_PAPIK" ]; then
         if ! ( curl -L --output /dev/null --silent --fail --header "Content-Type: application/json" -d '{
             "api_key": "'"$NEXT_PUBLIC_POSTHOG_PAPIK"'",
             "event": "install",
@@ -113,7 +113,7 @@ else
     if [ "$PREVIOUS_VERSION" != "$NEXT_PUBLIC_SOURCEBOT_VERSION" ]; then
         echo -e "\e[34m[Info] Upgraded from version $PREVIOUS_VERSION to $NEXT_PUBLIC_SOURCEBOT_VERSION\e[0m"
 
-        if [ "$SOURCEBOT_TELEMETRY_DISABLED" = "false" ]; then
+        if [ "$SOURCEBOT_TELEMETRY_DISABLED" = "false" ] && [ -n "$NEXT_PUBLIC_POSTHOG_PAPIK" ]; then
             if ! ( curl -L --output /dev/null --silent --fail --header "Content-Type: application/json" -d '{
                 "api_key": "'"$NEXT_PUBLIC_POSTHOG_PAPIK"'",
                 "event": "upgrade",

@@ -67,7 +67,7 @@ export const DeleteConnectionSetting = ({
         <div className="flex flex-col w-full bg-background border rounded-lg p-6">
             <h2 className="text-lg font-semibold">Delete Connection</h2>
             <p className="text-sm text-muted-foreground mt-2">
-                Permanently delete this connection from Sourcebot. All linked repositories that are not linked to any other connection will also be deleted.
+                Permanently delete this connection from Sherlock. All linked repositories that are not linked to any other connection will also be deleted.
             </p>
             <div className="flex flex-row justify-end">
                 <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

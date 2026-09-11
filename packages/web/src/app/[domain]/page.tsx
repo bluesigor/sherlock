@@ -1,12 +1,11 @@
 import { NavigationMenu } from "./components/navigationMenu";
 import { SearchBar } from "./components/searchBar";
 import { Separator } from "@/components/ui/separator";
-import { UpgradeToast } from "./components/upgradeToast";
 import Link from "next/link";
 import { getOrgFromDomain } from "@/data/org";
 import { PageNotFound } from "./components/pageNotFound";
 import { Footer } from "@/app/components/footer";
-import { SourcebotLogo } from "../components/sourcebotLogo";
+import { SherlockLogo } from "../components/sherlockLogo";
 import { RepositorySnapshot } from "./components/repositorySnapshot";
 import { SyntaxReferenceGuideHint } from "./components/syntaxReferenceGuideHint";
 import { env } from '@/env.mjs';
@@ -22,10 +21,10 @@ export default async function Home({ params: { domain } }: { params: { domain: s
             <NavigationMenu
                 domain={domain}
             />
-            <UpgradeToast />
+
             <div className="flex flex-col justify-center items-center mt-8 mb-8 md:mt-18 w-full px-5">
                 <div className="max-h-44 w-auto">
-                    <SourcebotLogo
+                    <SherlockLogo
                         className="h-18 md:h-40 w-auto"
                     />
                 </div>

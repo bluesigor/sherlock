@@ -1,9 +1,9 @@
 ---
-title: Configuring Sourcebot from a file (declarative config)
+title: Configuring Sherlock from a file (declarative config)
 sidebarTitle: Declarative config
 ---
 
-Some teams require Sourcebot to be configured via a file (where it can be stored in version control, run through CI/CD pipelines, etc.) instead of a web UI. For more information on configuring connections, see this [overview](/docs/connections/overview).
+Some teams require Sherlock to be configured via a file (where it can be stored in version control, run through CI/CD pipelines, etc.) instead of a web UI. For more information on configuring connections, see this [overview](/docs/connections/overview).
 
 
 | Variable | Description |
@@ -13,7 +13,7 @@ Some teams require Sourcebot to be configured via a file (where it can be stored
 
 ```json
 {
-    "$schema": "https://raw.githubusercontent.com/sourcebot-dev/sourcebot/refs/heads/main/schemas/v3/index.json",
+    "$schema": "https://raw.githubusercontent.com/sourcebot-dev/sourcebot/c201a5e1a976002c565f21fb723c4ad51ef38000/schemas/v3/index.json",
     "connections": {
         "connection-1": {
             "type": "github",
@@ -28,17 +28,17 @@ Some teams require Sourcebot to be configured via a file (where it can be stored
 ## Schema reference
 
 <Accordion title="Reference">
-[schemas/v3/index.json](https://github.com/sourcebot-dev/sourcebot/blob/main/schemas/v3/index.json)
+[schemas/v3/index.json](https://github.com/sourcebot-dev/sourcebot/blob/c201a5e1a976002c565f21fb723c4ad51ef38000/schemas/v3/index.json)
 
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "title": "SourcebotConfig",
+  "title": "SherlockConfig",
   "definitions": {
     "Settings": {
       "type": "object",
-      "description": "Defines the globabl settings for Sourcebot.",
+      "description": "Defines the globabl settings for Sherlock.",
       "properties": {
         "maxFileSize": {
           "type": "number",
@@ -108,7 +108,7 @@ Some teams require Sourcebot to be configured via a file (where it can be stored
     },
     "connections": {
       "type": "object",
-      "description": "Defines a collection of connections from varying code hosts that Sourcebot should sync with. This is only available in single-tenancy mode.",
+      "description": "Defines a collection of connections from varying code hosts that Sherlock should sync with. This is only available in single-tenancy mode.",
       "patternProperties": {
         "^[a-zA-Z0-9_-]+$": {
           "$schema": "http://json-schema.org/draft-07/schema#",

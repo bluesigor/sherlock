@@ -17,7 +17,7 @@ export const env = createEnv({
         SHARD_MAX_MATCH_COUNT: numberSchema.default(10000),
         TOTAL_MAX_MATCH_COUNT: numberSchema.default(100000),
         ZOEKT_MAX_WALL_TIME_MS: numberSchema.default(10000),
-        
+
         // Auth
         AUTH_SECRET: z.string(),
         AUTH_GITHUB_CLIENT_ID: z.string().optional(),
@@ -40,7 +40,7 @@ export const env = createEnv({
         // Misc
         CONFIG_MAX_REPOS_NO_TOKEN: numberSchema.default(Number.MAX_SAFE_INTEGER),
         NODE_ENV: z.enum(["development", "test", "production"]),
-        SOURCEBOT_TELEMETRY_DISABLED: booleanSchema.default('false'),
+        SOURCEBOT_TELEMETRY_DISABLED: booleanSchema.default("true"),
         DATABASE_URL: z.string().url(),
 
         SOURCEBOT_TENANCY_MODE: tenancyModeSchema.default("single"),

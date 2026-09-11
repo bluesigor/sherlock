@@ -20,7 +20,7 @@ export default async function SecretsPage({ params: { domain } }: SecretsPagePro
         <div className="flex flex-col gap-6">
             <div>
                 <h3 className="text-lg font-medium">Manage Secrets</h3>
-                <p className="text-sm text-muted-foreground">These secrets grant Sourcebot access to private code.</p>
+                <p className="text-sm text-muted-foreground">These secrets grant Sherlock access to private code.</p>
             </div>
 
             <SecretsList secrets={secrets} />

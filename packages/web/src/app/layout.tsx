@@ -9,8 +9,8 @@ import { SessionProvider } from "next-auth/react";
 import { env } from "@/env.mjs";
 
 export const metadata: Metadata = {
-    title: "Sourcebot",
-    description: "Sourcebot",
+    title: "Sherlock",
+    description: "Search and explore code across your repositories.",
 };
 
 export default function RootLayout({

@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { SourcebotLogo } from "@/app/components/sourcebotLogo";
+import { SherlockLogo } from "@/app/components/sherlockLogo";
 import Link from "next/link";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import placeholderAvatar from "@/public/placeholder_avatar.png";
@@ -58,7 +58,7 @@ export const AcceptInviteCard = ({ inviteId, orgName, orgDomain, orgImageUrl, ho
     return (
         <Card className="p-12 max-w-lg">
             <CardHeader className="text-center">
-                <SourcebotLogo
+                <SherlockLogo
                     className="h-16 w-auto mx-auto mb-2"
                     size="large"
                 />

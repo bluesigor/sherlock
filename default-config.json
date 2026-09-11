@@ -1,11 +1,9 @@
 {
-    "$schema": "./schemas/v2/index.json",
-    "repos": [
-        {
-            "type": "github",
-            "repos": [
-                "sourcebot-dev/sourcebot"
-            ]
-        }
-    ]
+  "$schema": "./schemas/v2/index.json",
+  "repos": [
+    {
+      "type": "github",
+      "repos": ["sourcebot-dev/sourcebot"]
+    }
+  ]
 }

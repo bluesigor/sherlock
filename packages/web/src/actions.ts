@@ -35,7 +35,7 @@ const ajv = new Ajv({
 
 /**
  * "Service Error Wrapper".
- * 
+ *
  * Captures any thrown exceptions and converts them to a unexpected
  * service error. Also logs them with Sentry.
  */
@@ -295,7 +295,7 @@ export const createSecret = async (key: string, value: string, domain: string): 
                     iv: encrypted.iv,
                 }
             });
-            
+
 
             return {
                 success: true,
@@ -729,9 +729,9 @@ export const createInvites = async (emails: string[], domain: string): Promise<{
                     const result = await transport.sendMail({
                         to: email,
                         from: env.EMAIL_FROM_ADDRESS,
-                        subject: `Join ${invite.org.name} on Sourcebot`,
+                        subject: `Join ${invite.org.name} on Sherlock`,
                         html,
-                        text: `Join ${invite.org.name} on Sourcebot by clicking here: ${inviteLink}`,
+                        text: `Join ${invite.org.name} on Sherlock by clicking here: ${inviteLink}`,
                     });
 
                     const failed = result.rejected.concat(result.pending).filter(Boolean);

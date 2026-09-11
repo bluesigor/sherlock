@@ -30,13 +30,13 @@ export function AddRepoButton({ isAddNewRepoButtonVisible }: { isAddNewRepoButto
           >
             <PlusCircle className="h-4 w-4" />
           </Button>
-    
+
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogContent className="sm:max-w-[800px] max-h-[90vh] flex flex-col p-0 gap-0 overflow-hidden">
               <DialogHeader className="px-6 py-4 border-b">
                 <DialogTitle className="text-xl font-semibold">Add a New Repository</DialogTitle>
                 <DialogDescription className="text-sm text-muted-foreground mt-1">
-                  Repositories are added to Sourcebot using <span className="text-primary">connections</span>. To add a new repo, add it to an existing connection or create a new one.
+                  Repositories are added to Sherlock using <span className="text-primary">connections</span>. To add a new repo, add it to an existing connection or create a new one.
                 </DialogDescription>
               </DialogHeader>
               <div className="flex-1 overflow-y-auto p-6">
@@ -54,4 +54,4 @@ export function AddRepoButton({ isAddNewRepoButtonVisible }: { isAddNewRepoButto
           </Dialog>
         </>
       )
-} 
+}

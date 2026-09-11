@@ -72,7 +72,7 @@ export const DisplayNameSetting = ({
                             <FormItem>
                                 <FormLabel className="text-lg font-semibold">Display Name</FormLabel>
                                 {/* @todo : refactor this description into a shared file */}
-                                <FormDescription>This is the {`connection's`} display name within Sourcebot. Examples: <b>public-github</b>, <b>self-hosted-gitlab</b>, <b>gerrit-other</b>, etc.</FormDescription>
+                                <FormDescription>This is the {`connection's`} display name within Sherlock. Examples: <b>public-github</b>, <b>self-hosted-gitlab</b>, <b>gerrit-other</b>, etc.</FormDescription>
                                 <FormControl className="max-w-lg">
                                     <Input
                                         {...field}

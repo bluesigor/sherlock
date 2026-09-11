@@ -38,7 +38,7 @@ process.on('unhandledRejection', (reason, promise) => {
 
 
 const parser = new ArgumentParser({
-    description: "Sourcebot backend tool",
+    description: "Sherlock backend tool",
 });
 
 type Arguments = {

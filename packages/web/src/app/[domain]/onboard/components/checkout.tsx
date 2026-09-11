@@ -1,7 +1,7 @@
 'use client';
 
 import { createOnboardingSubscription } from "@/actions";
-import { SourcebotLogo } from "@/app/components/sourcebotLogo";
+import { SherlockLogo } from "@/app/components/sherlockLogo";
 import { useToast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { useDomain } from "@/hooks/useDomain";
@@ -59,7 +59,7 @@ export const Checkout = () => {
 
     return (
         <div className="flex flex-col items-center justify-center max-w-md my-auto">
-            <SourcebotLogo
+            <SherlockLogo
                 className="h-16"
                 size="large"
             />

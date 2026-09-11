@@ -1,4 +1,4 @@
-import { SourcebotLogo } from "@/app/components/sourcebotLogo";
+import { SherlockLogo } from "@/app/components/sherlockLogo";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import placeholderAvatar from "@/public/placeholder_avatar.png";
 import { auth } from "@/auth";
@@ -10,7 +10,7 @@ export const InviteNotFoundCard = async () => {
 
     return (
         <Card className="flex flex-col items-center justify-center max-w-md text-center p-12">
-            <SourcebotLogo
+            <SherlockLogo
                 className="h-16 w-auto mx-auto mb-2"
                 size="large"
             />

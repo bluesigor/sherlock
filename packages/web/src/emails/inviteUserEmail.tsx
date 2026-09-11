@@ -38,7 +38,7 @@ export const InviteUserEmail = ({
     orgImageUrl,
     inviteLink,
 }: InviteUserEmailProps) => {
-    const previewText = `Join ${host.name ?? host.email} on Sourcebot`;
+    const previewText = `Join ${host.name ?? host.email} on Sherlock`;
 
     return (
         <Html>
@@ -48,23 +48,17 @@ export const InviteUserEmail = ({
                     <Preview>{previewText}</Preview>
                     <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
                         <Section className="mt-[32px]">
-                            <Img
-                                src={`${baseUrl}/sb_logo_light_large.png`}
-                                width="auto"
-                                height="60"
-                                alt="Sourcebot Logo"
-                                className="my-0 mx-auto"
-                            />
+                            <Text className="text-2xl font-bold text-black">Sherlock</Text>
                         </Section>
                         <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
-                            Join <strong>{orgName}</strong> on <strong>Sourcebot</strong>
+                            Join <strong>{orgName}</strong> on <strong>Sherlock</strong>
                         </Heading>
                         <Text className="text-black text-[14px] leading-[24px]">
                             {`Hello${recipient.name ? ` ${recipient.name.split(' ')[0]}` : ''},`}
                         </Text>
                         <Text className="text-black text-[14px] leading-[24px]">
                             <InvitedByText email={host.email} name={host.name} /> has invited you to the <strong>{orgName}</strong> organization on{' '}
-                            <strong>Sourcebot</strong>.
+                            <strong>Sherlock</strong>.
                         </Text>
                         <Section>
                             <Row>

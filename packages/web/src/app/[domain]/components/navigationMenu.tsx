@@ -1,21 +1,16 @@
-import { Button } from "@/components/ui/button";
 import { NavigationMenu as NavigationMenuBase, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { SettingsDropdown } from "./settingsDropdown";
-import { GitHubLogoIcon, DiscordLogoIcon } from "@radix-ui/react-icons";
-import { redirect } from "next/navigation";
 import { OrgSelector } from "./orgSelector";
 import { getSubscriptionData } from "@/actions";
 import { ErrorNavIndicator } from "./errorNavIndicator";
 import { WarningNavIndicator } from "./warningNavIndicator";
 import { ProgressNavIndicator } from "./progressNavIndicator";
-import { SourcebotLogo } from "@/app/components/sourcebotLogo";
+import { SherlockLogo } from "@/app/components/sherlockLogo";
 import { TrialNavIndicator } from "./trialNavIndicator";
 import { IS_BILLING_ENABLED } from "@/lib/stripe";
 import { env } from "@/env.mjs";
-const SOURCEBOT_DISCORD_URL = "https://discord.gg/6Fhp27x7Pb";
-const SOURCEBOT_GITHUB_URL = "https://github.com/sourcebot-dev/sourcebot";
 
 interface NavigationMenuProps {
     domain: string;
@@ -34,7 +29,7 @@ export const NavigationMenu = async ({
                         href={`/${domain}`}
                         className="mr-3 cursor-pointer"
                     >
-                        <SourcebotLogo
+                        <SherlockLogo
                             className="h-11"
                             size="small"
                         />
@@ -92,34 +87,9 @@ export const NavigationMenu = async ({
                     <WarningNavIndicator />
                     <ErrorNavIndicator />
                     <TrialNavIndicator subscription={subscription} />
-                    <form
-                        action={async () => {
-                            "use server";
-                            redirect(SOURCEBOT_DISCORD_URL);
-                        }}
-                    >
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            type="submit"
-                        >
-                            <DiscordLogoIcon className="w-4 h-4" />
-                        </Button>
-                    </form>
-                    <form
-                        action={async () => {
-                            "use server";
-                            redirect(SOURCEBOT_GITHUB_URL);
-                        }}
-                    >
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            type="submit"
-                        >
-                            <GitHubLogoIcon className="w-4 h-4" />
-                        </Button>
-                    </form>
+
+
+                    <Link href="/about" className="px-2 text-sm">About Sherlock</Link>
                     <SettingsDropdown displaySettingsOption={env.SOURCEBOT_AUTH_ENABLED === 'true'} />
                 </div>
             </div>

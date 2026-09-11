@@ -4,7 +4,7 @@ import { env } from './env.js';
 
 let posthog: PostHog | undefined = undefined;
 
-if (env.NEXT_PUBLIC_POSTHOG_PAPIK) {
+if (env.SOURCEBOT_TELEMETRY_DISABLED !== "true" && env.NEXT_PUBLIC_POSTHOG_PAPIK) {
     posthog = new PostHog(
         env.NEXT_PUBLIC_POSTHOG_PAPIK,
         {

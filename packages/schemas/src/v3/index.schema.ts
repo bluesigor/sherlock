@@ -2,11 +2,11 @@
 const schema = {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "title": "SourcebotConfig",
+  "title": "SherlockConfig",
   "definitions": {
     "Settings": {
       "type": "object",
-      "description": "Defines the globabl settings for Sourcebot.",
+      "description": "Defines the globabl settings for Sherlock.",
       "properties": {
         "maxFileSize": {
           "type": "number",
@@ -76,7 +76,7 @@ const schema = {
     },
     "connections": {
       "type": "object",
-      "description": "Defines a collection of connections from varying code hosts that Sourcebot should sync with. This is only available in single-tenancy mode.",
+      "description": "Defines a collection of connections from varying code hosts that Sherlock should sync with. This is only available in single-tenancy mode.",
       "patternProperties": {
         "^[a-zA-Z0-9_-]+$": {
           "$schema": "http://json-schema.org/draft-07/schema#",

@@ -1,4 +1,4 @@
-import { SourcebotLogo } from "@/app/components/sourcebotLogo"
+import { SherlockLogo } from "@/app/components/sherlockLogo"
 import { OnboardingSteps } from "@/lib/constants";
 import { IS_BILLING_ENABLED } from "@/lib/stripe";
 
@@ -15,7 +15,7 @@ export const OnboardHeader = ({ title, description, step: currentStep }: Onboard
 
     return (
         <div className="flex flex-col items-center text-center mb-10">
-            <SourcebotLogo
+            <SherlockLogo
                 className="h-16 mb-2"
                 size="large"
             />

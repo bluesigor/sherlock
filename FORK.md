@@ -18,3 +18,7 @@ The starting Makefile includes the local Go 1.23.4 toolchain pin and PATH quotin
 Install prerequisites described in CONTRIBUTING.md, then run `make` to install dependencies and build Zoekt. Configure a separate development database and Redis instance before running `yarn dev`; do not reuse an existing newer Sourcebot database for this older version.
 
 Before publishing a product, adapt branding and upstream deployment references, verify the exact dependencies and release image, and package the required third-party notices and applicable source materials. This historical source selection is not a complete dependency or trademark clearance.
+
+## Sherlock identity
+
+User-facing names and logos are Sherlock. Sourcebot attribution remains here, in LICENSE, the About page, and UPSTREAM_CHANGELOG.md. Internal package/environment/storage names are retained for compatibility. Database migrations and third-party source are not rebranded. Historical docs screenshots remain labeled as upstream examples. Upstream hosted services, update checks, and automated deployment workflows were removed; configure your own integrations.

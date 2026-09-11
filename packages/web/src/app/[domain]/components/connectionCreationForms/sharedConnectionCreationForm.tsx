@@ -128,7 +128,7 @@ export default function SharedConnectionCreationForm<T>({
                     <h1 className="text-3xl">{title}</h1>
                 </div>
                 <span className="flex flex-row items-center">
-                    <InfoIcon className="w-4 h-4 mr-2" />Connections are used to specify what repositories you want Sourcebot to sync.
+                    <InfoIcon className="w-4 h-4 mr-2" />Connections are used to specify what repositories you want Sherlock to sync.
                 </span>
             </div>
             <Form
@@ -142,7 +142,7 @@ export default function SharedConnectionCreationForm<T>({
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Display Name</FormLabel>
-                                    <FormDescription>This is the {`connection's`} display name within Sourcebot.</FormDescription>
+                                    <FormDescription>This is the {`connection's`} display name within Sherlock.</FormDescription>
                                     <FormControl>
                                         <Input
                                             {...field}

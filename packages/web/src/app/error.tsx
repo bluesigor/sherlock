@@ -4,11 +4,10 @@ import * as Sentry from "@sentry/nextjs";
 import { useEffect, useMemo } from 'react'
 import { useState } from "react"
 import { Copy, CheckCircle2, TriangleAlert } from "lucide-react"
-import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { serviceErrorSchema } from '@/lib/serviceError';
-import { SourcebotLogo } from './components/sourcebotLogo';
+import { SherlockLogo } from './components/sherlockLogo';
 
 export default function Error({ error, reset }: { error: Error & { digest?: string }, reset: () => void }) {
     useEffect(() => {
@@ -38,7 +37,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
 
     return (
         <div className="flex flex-col min-h-screen justify-center items-center bg-backgroundSecondary">
-            <SourcebotLogo
+            <SherlockLogo
                 className="mb-4"
                 size='large'
             />
@@ -76,7 +75,7 @@ function ErrorCard({ message, errorCode, statusCode, onReloadButtonClicked }: Er
                     Unexpected Error
                 </CardTitle>
                 <CardDescription className="text-sm">
-                    An unexpected error occurred. Please reload the page and try again. If the issue persists, <Link href={`mailto:team@sourcebot.dev?subject=Sourcebot%20Error%20Report${errorCode ? `%20|%20Code:%20${errorCode}` : ''}`} className='underline'>please contact us</Link>.
+                    An unexpected error occurred. Please reload the page and try again. If the issue persists, contact your instance administrator and include the error code.
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">

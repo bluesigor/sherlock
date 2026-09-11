@@ -10,20 +10,20 @@ export type ConnectionConfig =
   | GiteaConnectionConfig
   | GerritConnectionConfig;
 
-export interface SourcebotConfig {
+export interface SherlockConfig {
   $schema?: string;
   settings?: Settings;
   /**
-   * Defines a collection of connections from varying code hosts that Sourcebot should sync with. This is only available in single-tenancy mode.
+   * Defines a collection of connections from varying code hosts that Sherlock should sync with. This is only available in single-tenancy mode.
    */
   connections?: {
     [k: string]: ConnectionConfig;
   };
 }
 /**
- * Defines the globabl settings for Sourcebot.
+ * Defines the globabl settings for Sherlock.
  *
- * This interface was referenced by `SourcebotConfig`'s JSON-Schema
+ * This interface was referenced by `SherlockConfig`'s JSON-Schema
  * via the `definition` "Settings".
  */
 export interface Settings {

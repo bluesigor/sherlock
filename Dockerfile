@@ -142,7 +142,7 @@ fi
 
 ENV SKIP_ENV_VALIDATION=0
 # ------------------------------
-        
+
 # ------ Runner ------
 FROM node-alpine AS runner
 # -----------
@@ -158,7 +158,7 @@ ARG NEXT_PUBLIC_SENTRY_BACKEND_DSN
 ENV NEXT_PUBLIC_SENTRY_BACKEND_DSN=$NEXT_PUBLIC_SENTRY_BACKEND_DSN
 # -----------
 
-RUN echo "Sourcebot Version: $NEXT_PUBLIC_SOURCEBOT_VERSION"
+RUN echo "Sherlock Version: $NEXT_PUBLIC_SOURCEBOT_VERSION"
 
 WORKDIR /app
 ENV NODE_ENV=production
@@ -174,10 +174,11 @@ ENV SRC_TENANT_ENFORCEMENT_MODE=strict
 # Valid values are: debug, info, warn, error
 ENV SOURCEBOT_LOG_LEVEL=info
 
-# Sourcebot collects anonymous usage data using [PostHog](https://posthog.com/). Uncomment this line to disable.
-# ENV SOURCEBOT_TELEMETRY_DISABLED=1
+# Analytics are disabled by default. Configure your own account before enabling.
+ENV SOURCEBOT_TELEMETRY_DISABLED=true
 
-COPY package.json yarn.lock* .yarnrc.yml ./
+COPY package.json yarn.lock* .yarnrc.yml LICENSE ./
+COPY vendor/zoekt/LICENSE ./licenses/zoekt-LICENSE
 COPY .yarn ./.yarn
 
 # Configure zoekt

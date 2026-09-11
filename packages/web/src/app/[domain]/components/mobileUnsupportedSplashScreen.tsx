@@ -27,7 +27,7 @@ export const MobileUnsupportedSplashScreen = () => {
                     Mobile is not supported.
                 </div>
                 <p className="text-sm text-muted-foreground mb-8">
-                    Sourcebot on mobile is still a work in progress. Please use a desktop computer to get the best experience.
+                    Sherlock on mobile is still a work in progress. Please use a desktop computer to get the best experience.
                 </p>
                     <Button
                         className="w-full"

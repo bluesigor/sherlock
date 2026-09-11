@@ -2,8 +2,8 @@
 const schema = {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "title": "Sourcebot configuration schema",
-  "description": "A Sourcebot configuration file outlines which repositories Sourcebot should sync and index.",
+  "title": "Sherlock configuration schema",
+  "description": "A Sherlock configuration file outlines which repositories Sherlock should sync and index.",
   "definitions": {
     "Token": {
       "anyOf": [
@@ -631,7 +631,7 @@ const schema = {
     },
     "repos": {
       "type": "array",
-      "description": "Defines a collection of repositories from varying code hosts that Sourcebot should sync with.",
+      "description": "Defines a collection of repositories from varying code hosts that Sherlock should sync with.",
       "items": {
         "$ref": "#/definitions/Repos"
       }
