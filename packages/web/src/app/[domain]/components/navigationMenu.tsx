@@ -93,7 +93,7 @@ export const NavigationMenu = async ({
                     <SettingsDropdown displaySettingsOption={env.SOURCEBOT_AUTH_ENABLED === 'true'} />
                 </div>
             </div>
-            <Separator />
+            <hr className="cyber-rule" />
         </div>
 
 

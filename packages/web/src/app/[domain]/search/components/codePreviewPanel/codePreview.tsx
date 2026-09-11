@@ -122,7 +122,7 @@ export const CodePreview = ({
                 <div className="flex-1 overflow-hidden">
                     <span
                         className={clsx("block truncate-start text-sm font-mono", {
-                            "cursor-pointer text-blue-500 hover:underline": file?.link
+                            "cursor-pointer text-primary hover:underline": file?.link
                         })}
                         onClick={() => {
                             if (file?.link) {

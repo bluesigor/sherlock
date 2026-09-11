@@ -1,6 +1,5 @@
 import { NavigationMenu } from "./components/navigationMenu";
 import { SearchBar } from "./components/searchBar";
-import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { getOrgFromDomain } from "@/data/org";
 import { PageNotFound } from "./components/pageNotFound";
@@ -17,27 +16,27 @@ export default async function Home({ params: { domain } }: { params: { domain: s
     }
 
     return (
-        <div className="flex flex-col items-center overflow-hidden min-h-screen">
+        <div className="cyber-grid flex flex-col items-center overflow-hidden min-h-screen">
             <NavigationMenu
                 domain={domain}
             />
 
             <div className="flex flex-col justify-center items-center mt-8 mb-8 md:mt-18 w-full px-5">
-                <div className="max-h-44 w-auto">
+                <div className="cyber-bloom max-h-44 w-auto">
                     <SherlockLogo
-                        className="h-18 md:h-40 w-auto"
+                        className="h-16 md:h-28 w-auto"
                     />
                 </div>
                 <SearchBar
                     autoFocus={true}
-                    className="mt-4 w-full max-w-[800px]"
+                    className="cyber-focus-glow mt-6 w-full max-w-[800px] transition-shadow"
                 />
                 <div className="mt-8">
                     <RepositorySnapshot authEnabled={env.SOURCEBOT_AUTH_ENABLED === 'true'} />
                 </div>
                 <div className="flex flex-col items-center w-fit gap-6">
-                    <Separator className="mt-5" />
-                    <span className="font-semibold">How to search</span>
+                    <hr className="cyber-rule mt-5 w-full" />
+                    <span className="pixel-type text-xs tracking-widest uppercase text-primary">How to search</span>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <HowToSection
                             title="Search in files or paths"
@@ -99,7 +98,7 @@ export default async function Home({ params: { domain } }: { params: { domain: s
 const HowToSection = ({ title, children }: { title: string, children: React.ReactNode }) => {
     return (
         <div className="flex flex-col gap-1">
-            <span className="dark:text-gray-300 text-sm mb-2 underline">{title}</span>
+            <span className="text-sm mb-2 text-foreground/80 border-b border-primary/25 pb-1 w-fit">{title}</span>
             {children}
         </div>
     )
@@ -124,7 +123,7 @@ const QueryExample = ({ children }: { children: React.ReactNode }) => {
 
 const QueryExplanation = ({ children }: { children: React.ReactNode }) => {
     return (
-        <span className="text-gray-500 dark:text-gray-400 ml-3">
+        <span className="text-muted-foreground ml-3">
             {children}
         </span>
     )

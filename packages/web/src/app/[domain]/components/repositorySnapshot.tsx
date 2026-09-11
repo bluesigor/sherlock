@@ -55,7 +55,7 @@ export function RepositorySnapshot({ authEnabled }: { authEnabled: boolean }) {
                 {`Search ${indexedRepos.length} `}
                 <Link
                     href={`${domain}/repos`}
-                    className="text-blue-500"
+                    className="text-primary"
                 >
                     {repos.length > 1 ? 'repositories' : 'repository'}
                 </Link>
@@ -76,7 +76,7 @@ function EmptyRepoState({ domain, authEnabled }: { domain: string, authEnabled: 
                         {authEnabled ? (
                             <>
                                 Create a{" "}
-                                <Link href={`/${domain}/connections`} className="text-blue-500 hover:underline inline-flex items-center gap-1">
+                                <Link href={`/${domain}/connections`} className="text-primary hover:underline inline-flex items-center gap-1">
                                     connection
                                 </Link>{" "}
                                 to start indexing repositories
@@ -84,7 +84,7 @@ function EmptyRepoState({ domain, authEnabled }: { domain: string, authEnabled: 
                         ) : (
                             <>
                                 Create a {" "}
-                                <Link href={`/about#help`} className="text-blue-500 hover:underline inline-flex items-center gap-1" target="_blank">
+                                <Link href={`/about#help`} className="text-primary hover:underline inline-flex items-center gap-1" target="_blank">
                                     configuration file
                                 </Link>{" "}
                                 to start indexing repositories

@@ -283,7 +283,7 @@ const PanelGroup = ({
                     }
                     {isMoreResultsButtonVisible && (
                         <div
-                            className="cursor-pointer text-blue-500 text-sm hover:underline ml-4"
+                            className="cursor-pointer text-primary text-sm hover:underline ml-4"
                             onClick={onLoadMoreResults}
                         >
                             (load more)

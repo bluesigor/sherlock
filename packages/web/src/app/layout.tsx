@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Jersey_10 } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { QueryClientProvider } from "./queryClientProvider";
@@ -7,6 +8,16 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SessionProvider } from "next-auth/react";
 import { env } from "@/env.mjs";
+
+// Pixel typeface used for the Sherlock wordmark. Jersey 10, SIL OFL 1.1.
+// Single weight by design: asking for 700 would make the browser synthesise a
+// bold, which smears the pixel grid.
+const pixelFont = Jersey_10({
+    weight: "400",
+    subsets: ["latin"],
+    variable: "--font-pixel",
+    display: "swap",
+});
 
 export const metadata: Metadata = {
     title: "Sherlock",
@@ -21,6 +32,7 @@ export default function RootLayout({
     return (
         <html
             lang="en"
+            className={pixelFont.variable}
             // @see : https://github.com/pacocoursey/next-themes?tab=readme-ov-file#with-app
             suppressHydrationWarning
         >
@@ -30,7 +42,7 @@ export default function RootLayout({
                     <PostHogProvider disabled={env.SOURCEBOT_TELEMETRY_DISABLED === "true"}>
                         <ThemeProvider
                             attribute="class"
-                            defaultTheme="system"
+                            defaultTheme="dark"
                             enableSystem
                             disableTransitionOnChange
                         >

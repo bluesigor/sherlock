@@ -96,7 +96,7 @@ export const AcceptInviteCard = ({ inviteId, orgName, orgDomain, orgImageUrl, ho
 }
 
 const InvitedByText = ({ email, name }: { email: string, name?: string }) => {
-    const emailElement = <Link href={`mailto:${email}`} className="text-blue-500 hover:text-blue-600">
+    const emailElement = <Link href={`mailto:${email}`} className="text-primary hover:text-primary/80">
         {email}
     </Link>;
 
