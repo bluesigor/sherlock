@@ -24,6 +24,9 @@ export const env = createEnv({
         AUTH_GITHUB_CLIENT_SECRET: z.string().optional(),
         AUTH_GOOGLE_CLIENT_ID: z.string().optional(),
         AUTH_GOOGLE_CLIENT_SECRET: z.string().optional(),
+        AUTH_ENTRA_CLIENT_ID: z.string().optional(),
+        AUTH_ENTRA_CLIENT_SECRET: z.string().optional(),
+        AUTH_ENTRA_TENANT_ID: z.string().optional(),
         AUTH_URL: z.string().url(),
         AUTH_CREDENTIALS_LOGIN_ENABLED: booleanSchema.default('true'),
 

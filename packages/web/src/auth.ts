@@ -2,12 +2,13 @@ import 'next-auth/jwt';
 import NextAuth, { DefaultSession, User as AuthJsUser } from "next-auth"
 import GitHub from "next-auth/providers/github"
 import Google from "next-auth/providers/google"
+import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id"
 import Credentials from "next-auth/providers/credentials"
 import EmailProvider from "next-auth/providers/nodemailer";
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/prisma";
 import { env } from "@/env.mjs";
-import { OrgRole, User } from '@sourcebot/db';
+import { User } from '@sourcebot/db';
 import 'next-auth/jwt';
 import type { Provider } from "next-auth/providers";
 import { verifyCredentialsRequestSchema } from './lib/schemas';
@@ -15,6 +16,8 @@ import { createTransport } from 'nodemailer';
 import { render } from '@react-email/render';
 import MagicLinkEmail from './emails/magicLinkEmail';
 import { SINGLE_TENANT_ORG_ID } from './lib/constants';
+import { roleForNewMember, isTrustedIdentityProvider } from './lib/orgMembership';
+import { getEntraCredentials, getEntraIssuer } from './lib/authProviders';
 import bcrypt from 'bcryptjs';
 
 export const runtime = 'nodejs';
@@ -47,6 +50,15 @@ export const getProviders = () => {
         providers.push(Google({
             clientId: env.AUTH_GOOGLE_CLIENT_ID,
             clientSecret: env.AUTH_GOOGLE_CLIENT_SECRET,
+        }));
+    }
+
+    const entra = getEntraCredentials(env);
+    if (entra) {
+        providers.push(MicrosoftEntraID({
+            clientId: entra.clientId,
+            clientSecret: entra.clientSecret,
+            issuer: getEntraIssuer(entra.tenantId),
         }));
     }
 
@@ -112,7 +124,7 @@ export const getProviders = () => {
                         email: newUser.email,
                     }
 
-                    onCreateUser({ user: authJsUser });
+                    onCreateUser({ user: authJsUser, provider: 'credentials' });
                     return authJsUser;
 
                     // Otherwise, the user exists, so verify the password.
@@ -139,9 +151,11 @@ export const getProviders = () => {
     return providers;
 }
 
-const onCreateUser = async ({ user }: { user: AuthJsUser }) => {
-    // In single-tenant mode w/ auth, we assign the first user to sign
-    // up as the owner of the default org.
+const onCreateUser = async ({ user, provider }: { user: AuthJsUser, provider: string }) => {
+    // In single-tenant mode w/ auth, the first user to sign up owns the default
+    // org. Later users join as members, but only when an identity provider
+    // vouched for them: credentials signup creates an account for any email
+    // and password it is handed, so it must never grant org access by itself.
     if (
         env.SOURCEBOT_TENANCY_MODE === 'single' &&
         env.SOURCEBOT_AUTH_ENABLED === 'true'
@@ -156,26 +170,32 @@ const onCreateUser = async ({ user }: { user: AuthJsUser }) => {
                 }
             });
 
-            // Only the first user to sign up will be an owner of the default org.
-            if (defaultOrg?.members.length === 0) {
-                await tx.org.update({
-                    where: {
-                        id: SINGLE_TENANT_ORG_ID,
-                    },
-                    data: {
-                        members: {
-                            create: {
-                                role: OrgRole.OWNER,
-                                user: {
-                                    connect: {
-                                        id: user.id,
-                                    }
+            if (!defaultOrg) {
+                return;
+            }
+
+            const isFirstUser = defaultOrg.members.length === 0;
+            if (!isFirstUser && !isTrustedIdentityProvider(provider)) {
+                return;
+            }
+
+            await tx.org.update({
+                where: {
+                    id: SINGLE_TENANT_ORG_ID,
+                },
+                data: {
+                    members: {
+                        create: {
+                            role: roleForNewMember(defaultOrg.members.length),
+                            user: {
+                                connect: {
+                                    id: user.id,
                                 }
                             }
                         }
                     }
-                });
-            }
+                }
+            });
         });
     }
 }
@@ -188,7 +208,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     trustHost: true,
     events: {
-        createUser: onCreateUser,
+        // `createUser` carries no account, so it cannot tell which provider
+        // vouched for the user. `signIn` does, and fires for the same adapter
+        // flows with `isNewUser` set. The credentials provider has no adapter
+        // flow and calls `onCreateUser` itself.
+        signIn: async ({ user, account, isNewUser }) => {
+            if (isNewUser && account?.provider) {
+                await onCreateUser({ user, provider: account.provider });
+            }
+        },
     },
     callbacks: {
         async jwt({ token, user: _user }) {
