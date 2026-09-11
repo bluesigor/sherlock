@@ -2,10 +2,12 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { ErrorCode } from '../errorCodes';
 import { AiSearchRequest } from '../types';
 
-const { generateTextMock, searchMock, getAiModelMock } = vi.hoisted(() => ({
+const { generateTextMock, searchMock, getAiModelMock, createOpenAIMock, createAnthropicMock } = vi.hoisted(() => ({
     generateTextMock: vi.fn(),
     searchMock: vi.fn(),
     getAiModelMock: vi.fn(),
+    createOpenAIMock: vi.fn(() => vi.fn((model: string) => ({ provider: 'openai', model }))),
+    createAnthropicMock: vi.fn(() => vi.fn((model: string) => ({ provider: 'anthropic', model }))),
 }));
 
 vi.mock('ai', () => ({
@@ -13,11 +15,11 @@ vi.mock('ai', () => ({
 }));
 
 vi.mock('@ai-sdk/openai', () => ({
-    createOpenAI: vi.fn(() => vi.fn((model: string) => ({ provider: 'openai', model }))),
+    createOpenAI: createOpenAIMock,
 }));
 
 vi.mock('@ai-sdk/anthropic', () => ({
-    createAnthropic: vi.fn(() => vi.fn((model: string) => ({ provider: 'anthropic', model }))),
+    createAnthropic: createAnthropicMock,
 }));
 
 vi.mock('./searchService', () => ({
@@ -48,6 +50,17 @@ const mockConfiguredModel = () => {
         provider: 'openai',
         model: 'gpt-4o-mini',
         displayName: 'GPT-4o mini',
+        token: { env: 'TEST_AI_TOKEN' },
+    });
+}
+
+const mockConfiguredAnthropicModel = () => {
+    process.env.TEST_AI_TOKEN = 'test-token';
+    getAiModelMock.mockResolvedValue({
+        id: 'anthropic/claude-3-5-haiku-latest',
+        provider: 'anthropic',
+        model: 'claude-3-5-haiku-latest',
+        displayName: 'Claude 3.5 Haiku',
         token: { env: 'TEST_AI_TOKEN' },
     });
 }
@@ -172,6 +185,34 @@ describe('translateQuery', () => {
 
         expect(response).toEqual({ translatedQuery: 'sym:searchRequestSchema' });
         expect(searchMock).not.toHaveBeenCalled();
+    });
+
+    test('resolves an openai model through the openai sdk', async () => {
+        mockConfiguredModel();
+        generateTextMock.mockResolvedValue({ text: 'sym:searchRequestSchema' });
+        const { translateQuery } = await import('./aiSearchService');
+
+        const response = await translateQuery({ query: request.query });
+
+        expect(createOpenAIMock).toHaveBeenCalledWith({ apiKey: 'test-token' });
+        expect(createOpenAIMock.mock.results[0].value).toHaveBeenCalledWith('gpt-4o-mini');
+        expect(createAnthropicMock).not.toHaveBeenCalled();
+        expect(generateTextMock.mock.calls[0][0].model).toEqual({ provider: 'openai', model: 'gpt-4o-mini' });
+        expect(response).toEqual({ translatedQuery: 'sym:searchRequestSchema' });
+    });
+
+    test('resolves an anthropic model through the anthropic sdk', async () => {
+        mockConfiguredAnthropicModel();
+        generateTextMock.mockResolvedValue({ text: 'sym:searchRequestSchema' });
+        const { translateQuery } = await import('./aiSearchService');
+
+        const response = await translateQuery({ query: request.query });
+
+        expect(createAnthropicMock).toHaveBeenCalledWith({ apiKey: 'test-token' });
+        expect(createAnthropicMock.mock.results[0].value).toHaveBeenCalledWith('claude-3-5-haiku-latest');
+        expect(createOpenAIMock).not.toHaveBeenCalled();
+        expect(generateTextMock.mock.calls[0][0].model).toEqual({ provider: 'anthropic', model: 'claude-3-5-haiku-latest' });
+        expect(response).toEqual({ translatedQuery: 'sym:searchRequestSchema' });
     });
 
     test('returns aiSearchNotConfigured when no model is configured', async () => {
