@@ -162,7 +162,7 @@ export const SearchResultsPanel = ({
             {isLoadMoreButtonVisible && (
                 <div className="p-3">
                     <span
-                        className="cursor-pointer text-blue-500 hover:underline"
+                        className="cursor-pointer text-primary hover:underline"
                         onClick={onLoadMoreButtonClicked}
                     >
                         Load more results

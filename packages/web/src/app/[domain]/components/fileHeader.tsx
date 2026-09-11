@@ -72,7 +72,7 @@ export const FileHeader = ({
                         : (
                             <>
                                 {fileName.slice(0, fileNameHighlightRange.from)}
-                                <span className="bg-yellow-200 dark:bg-blue-700">
+                                <span className="bg-primary/30 dark:bg-primary/40 rounded-[2px]">
                                     {fileName.slice(fileNameHighlightRange.from, fileNameHighlightRange.to)}
                                 </span>
                                 {fileName.slice(fileNameHighlightRange.to)}

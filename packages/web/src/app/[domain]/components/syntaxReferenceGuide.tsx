@@ -189,7 +189,7 @@ export const SyntaxReferenceGuide = () => {
                         </TableRow>
                         <TableRow>
                             <TableCell className="py-2"><Code><Highlight>lang:</Highlight></Code></TableCell>
-                            <TableCell className="py-2">Filter results by language (as defined by <Link className="text-blue-500" href={LINGUIST_LINK}>linguist</Link>). By default all languages are searched.</TableCell>
+                            <TableCell className="py-2">Filter results by language (as defined by <Link className="text-primary" href={LINGUIST_LINK}>linguist</Link>). By default all languages are searched.</TableCell>
                             <TableCell className="py-2">
                                 <div className="flex flex-col gap-1">
                                     <Code
@@ -207,7 +207,7 @@ export const SyntaxReferenceGuide = () => {
                         </TableRow>
                         <TableRow>
                             <TableCell className="py-2"><Code><Highlight>sym:</Highlight></Code></TableCell>
-                            <TableCell className="py-2">Match symbol definitions created by <Link className="text-blue-500" href={CTAGS_LINK}>universal ctags</Link> at index time.</TableCell>
+                            <TableCell className="py-2">Match symbol definitions created by <Link className="text-primary" href={CTAGS_LINK}>universal ctags</Link> at index time.</TableCell>
                             <TableCell className="py-2">
                                 <div className="flex flex-col gap-1">
                                     <Code

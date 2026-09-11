@@ -49,7 +49,7 @@ const StatusIndicator = ({ status }: { status: RepoIndexingStatus }) => {
         case RepoIndexingStatus.INDEXING:
             icon = <Loader2 className="h-3.5 w-3.5 animate-spin" />
             description = "Repository is being indexed"
-            className = "text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400"
+            className = "text-primary bg-primary/10 dark:bg-primary/15"
             break
         case RepoIndexingStatus.INDEXED:
             icon = <CheckCircle2 className="h-3.5 w-3.5" />

@@ -143,7 +143,7 @@ export const FileMatchContainer = ({
                     onClick={onShowAllMatchesButtonClicked}
                 >
                     <p
-                        className="text-blue-500 cursor-pointer text-sm flex flex-row items-center gap-2"
+                        className="text-primary cursor-pointer text-sm flex flex-row items-center gap-2"
                     >
                         {showAllMatches ? <DoubleArrowUpIcon className="w-3 h-3" /> : <DoubleArrowDownIcon className="w-3 h-3" />}
                         {showAllMatches ? `Show fewer matches` : `Show ${matchCount - MAX_MATCHES_TO_PREVIEW} more matches`}
