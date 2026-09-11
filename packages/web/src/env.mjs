@@ -34,12 +34,6 @@ export const env = createEnv({
         SMTP_CONNECTION_URL: z.string().url().optional(),
         EMAIL_FROM_ADDRESS: z.string().email().optional(),
 
-        // Stripe
-        STRIPE_SECRET_KEY: z.string().optional(),
-        STRIPE_PRODUCT_ID: z.string().optional(),
-        STRIPE_WEBHOOK_SECRET: z.string().optional(),
-        STRIPE_ENABLE_TEST_CLOCKS: booleanSchema.default('false'),
-
         // Misc
         CONFIG_MAX_REPOS_NO_TOKEN: numberSchema.default(Number.MAX_SAFE_INTEGER),
         NODE_ENV: z.enum(["development", "test", "production"]),

@@ -5,9 +5,7 @@ import { notFound, redirect } from "next/navigation";
 import { ConnectCodeHost } from "./components/connectCodeHost";
 import { InviteTeam } from "./components/inviteTeam";
 import { CompleteOnboarding } from "./components/completeOnboarding";
-import { Checkout } from "./components/checkout";
 import { LogoutEscapeHatch } from "@/app/components/logoutEscapeHatch";
-import { IS_BILLING_ENABLED } from "@/lib/stripe";
 import { env } from "@/env.mjs";
 
 interface OnboardProps {
@@ -16,7 +14,6 @@ interface OnboardProps {
     },
     searchParams: {
         step?: string
-        stripe_session_id?: string
     }
 }
 
@@ -35,14 +32,13 @@ export default async function Onboard({ params, searchParams }: OnboardProps) {
     if (
         !Object.values(OnboardingSteps)
             .filter(s => s !== OnboardingSteps.CreateOrg)
-            .filter(s => !IS_BILLING_ENABLED ? s !== OnboardingSteps.Checkout : true)
             .map(s => s.toString())
             .includes(step)
     ) {
         redirect(`/${params.domain}/onboard?step=${OnboardingSteps.ConnectCodeHost}`);
     }
 
-    const lastRequiredStep = IS_BILLING_ENABLED ? OnboardingSteps.Checkout : OnboardingSteps.Complete;
+    const lastRequiredStep = OnboardingSteps.Complete;
 
     return (
         <div className="flex flex-col items-center py-12 px-4 sm:px-12 min-h-screen bg-backgroundSecondary relative">
@@ -72,11 +68,6 @@ export default async function Onboard({ params, searchParams }: OnboardProps) {
                     <InviteTeam
                         nextStep={lastRequiredStep}
                     />
-                </>
-            )}
-            {step === OnboardingSteps.Checkout && (
-                <>
-                    <Checkout />
                 </>
             )}
             {step === OnboardingSteps.Complete && (

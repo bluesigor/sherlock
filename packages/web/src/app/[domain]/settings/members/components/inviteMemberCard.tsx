@@ -29,10 +29,9 @@ export const inviteMemberFormSchema = z.object({
 
 interface InviteMemberCardProps {
     currentUserRole: OrgRole;
-    isBillingEnabled: boolean;
 }
 
-export const InviteMemberCard = ({ currentUserRole, isBillingEnabled }: InviteMemberCardProps) => {
+export const InviteMemberCard = ({ currentUserRole }: InviteMemberCardProps) => {
     const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const domain = useDomain();
@@ -145,7 +144,7 @@ export const InviteMemberCard = ({ currentUserRole, isBillingEnabled }: InviteMe
                     <AlertDialogHeader>
                         <AlertDialogTitle>Invite Team Members</AlertDialogTitle>
                         <AlertDialogDescription>
-                            {`Your team is growing! By confirming, you will be inviting ${form.getValues().emails.length} new members to your organization. ${isBillingEnabled ? "Your subscription's seat count will be adjusted when a member accepts their invitation." : ""}`}
+                            {`Your team is growing! By confirming, you will be inviting ${form.getValues().emails.length} new members to your organization.`}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <div className="border rounded-lg overflow-hidden">

@@ -1,7 +1,7 @@
 import { Job, Queue, Worker } from 'bullmq';
 import { Redis } from 'ioredis';
 import { createLogger } from "./logger.js";
-import { Connection, PrismaClient, Repo, RepoToConnection, RepoIndexingStatus, StripeSubscriptionStatus } from "@sourcebot/db";
+import { Connection, PrismaClient, Repo, RepoToConnection, RepoIndexingStatus } from "@sourcebot/db";
 import { GithubConnectionConfig, GitlabConnectionConfig, GiteaConnectionConfig } from '@sourcebot/schemas/v3/connection.type';
 import { AppContext, Settings, repoMetadataSchema } from "./types.js";
 import { getRepoPath, getTokenFromConfig, measure, getShardPrefix } from "./utils.js";
@@ -423,30 +423,7 @@ export class RepoManager implements IRepoManager {
             this.logger.info(`Garbage collecting ${reposWithNoConnections.length} repos with no connections: ${reposWithNoConnections.map(repo => repo.id).join(', ')}`);
         }
 
-        ////////////////////////////////////
-        // Get inactive org repos
-        ////////////////////////////////////
-        const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-        const inactiveOrgRepos = await this.db.repo.findMany({
-            where: {
-                org: {
-                    stripeSubscriptionStatus: StripeSubscriptionStatus.INACTIVE,
-                    stripeLastUpdatedAt: {
-                        lt: sevenDaysAgo
-                    }
-                },
-                OR: [
-                    { indexedAt: null },
-                    { indexedAt: { lt: thresholdDate } }
-                ]
-            }
-        });
-
-        if (inactiveOrgRepos.length > 0) {
-            this.logger.info(`Garbage collecting ${inactiveOrgRepos.length} inactive org repos: ${inactiveOrgRepos.map(repo => repo.id).join(', ')}`);
-        }
-
-        const reposToDelete = [...reposWithNoConnections, ...inactiveOrgRepos];
+        const reposToDelete = reposWithNoConnections;
         if (reposToDelete.length > 0) {
             await this.scheduleRepoGarbageCollectionBulk(reposToDelete);
         }

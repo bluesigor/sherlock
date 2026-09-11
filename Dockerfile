@@ -18,8 +18,8 @@ ARG NEXT_PUBLIC_SOURCEBOT_CLOUD_ENVIRONMENT
 ARG NEXT_PUBLIC_SENTRY_WEBAPP_DSN
 ARG NEXT_PUBLIC_SENTRY_BACKEND_DSN
 
-FROM node:20-alpine3.19 AS node-alpine
-FROM golang:1.23.4-alpine3.19 AS go-alpine
+FROM node:20-alpine3.21 AS node-alpine
+FROM golang:1.23.4-alpine3.21 AS go-alpine
 # ----------------------------------
 
 # ------ Build Zoekt ------

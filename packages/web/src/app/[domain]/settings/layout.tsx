@@ -2,7 +2,6 @@ import { Metadata } from "next"
 import { SidebarNav } from "./components/sidebar-nav"
 import { NavigationMenu } from "../components/navigationMenu"
 import { Header } from "./components/header";
-import { IS_BILLING_ENABLED } from "@/lib/stripe";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 
@@ -27,12 +26,6 @@ export default async function SettingsLayout({
             title: "General",
             href: `/${domain}/settings`,
         },
-        ...(IS_BILLING_ENABLED ? [
-            {
-                title: "Billing",
-                href: `/${domain}/settings/billing`,
-            }
-        ] : []),
         {
             title: "Members",
             href: `/${domain}/settings/members`,

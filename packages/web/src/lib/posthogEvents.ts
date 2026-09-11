@@ -71,10 +71,6 @@ export type PosthogEventMap = {
     wa_progress_nav_pressed: {},
     wa_progress_nav_job_pressed: {},
     //////////////////////////////////////////////////////////////////
-    wa_trial_nav_pressed: {},
-    wa_trial_nav_subscription_fetch_fail: {
-        error: string,
-    },
     //////////////////////////////////////////////////////////////////
     wa_connection_list_item_error_hover: {},
     wa_connection_list_item_error_pressed: {},
@@ -104,18 +100,6 @@ export type PosthogEventMap = {
     },
     wa_secret_combobox_import_secret_fail: {
         type: string,
-        error: string,
-    },
-    //////////////////////////////////////////////////////////////////
-    wa_billing_email_updated_success: {},
-    wa_billing_email_updated_fail: {
-        error: string,
-    },
-    wa_billing_email_fetch_fail: {
-        error: string,
-    },
-    wa_manage_subscription_button_create_portal_session_success: {},
-    wa_manage_subscription_button_create_portal_session_fail: {
         error: string,
     },
     //////////////////////////////////////////////////////////////////
@@ -175,16 +159,7 @@ export type PosthogEventMap = {
         name: string,
     },
     //////////////////////////////////////////////////////////////////
-    wa_onboard_checkout_success: {},
-    wa_onboard_checkout_fail: {
-        error: string,
-    },
     //////////////////////////////////////////////////////////////////
-    wa_team_upgrade_card_pressed: {},
-    wa_team_upgrade_checkout_success: {},
-    wa_team_upgrade_checkout_fail: {
-        error: string,
-    },
     wa_enterprise_upgrade_card_pressed: {},
     //////////////////////////////////////////////////////////////////
     wa_connection_delete_success: {},

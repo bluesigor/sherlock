@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          submodules: "true"
       - name: Use Node.Js
         uses: actions/setup-node@v4
         with:
