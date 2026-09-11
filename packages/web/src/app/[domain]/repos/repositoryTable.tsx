@@ -28,19 +28,21 @@ export const RepositoryTable = ({ isAddNewRepoButtonVisible }: RepositoryTablePr
     });
 
     const tableRepos = useMemo(() => {
-        if (reposLoading) return Array(4).fill(null).map(() => ({
+        if (reposLoading) return Array(4).fill(null).map((): RepositoryColumnInfo => ({
             name: "",
             connections: [],
             repoIndexingStatus: RepoIndexingStatus.NEW,
             lastIndexed: "",
             url: "",
             imageUrl: "",
+            codeHostType: "",
         }));
 
         if (!repos) return [];
         return repos.map((repo): RepositoryColumnInfo => ({
             name: repo.repoDisplayName ?? repo.repoName,
             imageUrl: repo.imageUrl,
+            codeHostType: repo.codeHostType,
             connections: repo.linkedConnections,
             repoIndexingStatus: repo.repoIndexingStatus as RepoIndexingStatus,
             lastIndexed: repo.indexedAt?.toISOString() ?? "",
