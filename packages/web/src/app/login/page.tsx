@@ -3,6 +3,7 @@ import { LoginForm } from "./components/loginForm";
 import { redirect } from "next/navigation";
 import { getProviders } from "@/auth";
 import { Footer } from "@/app/components/footer";
+import { isOauthProvider } from "./oauthProviders";
 
 interface LoginProps {
     searchParams: {
@@ -35,8 +36,7 @@ export default async function Login({ searchParams }: LoginProps) {
                     callbackUrl={searchParams.callbackUrl}
                     error={searchParams.error}
                     enabledMethods={{
-                        github: providerMap.some(provider => provider.id === "github"),
-                        google: providerMap.some(provider => provider.id === "google"),
+                        oauth: providerMap.filter(provider => isOauthProvider(provider.id)),
                         magicLink: providerMap.some(provider => provider.id === "nodemailer"),
                         credentials: providerMap.some(provider => provider.id === "credentials"),
                     }}

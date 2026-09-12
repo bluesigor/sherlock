@@ -24,18 +24,15 @@ export const env = createEnv({
         AUTH_GITHUB_CLIENT_SECRET: z.string().optional(),
         AUTH_GOOGLE_CLIENT_ID: z.string().optional(),
         AUTH_GOOGLE_CLIENT_SECRET: z.string().optional(),
+        AUTH_ENTRA_CLIENT_ID: z.string().optional(),
+        AUTH_ENTRA_CLIENT_SECRET: z.string().optional(),
+        AUTH_ENTRA_TENANT_ID: z.string().optional(),
         AUTH_URL: z.string().url(),
         AUTH_CREDENTIALS_LOGIN_ENABLED: booleanSchema.default('true'),
 
         // Email
         SMTP_CONNECTION_URL: z.string().url().optional(),
         EMAIL_FROM_ADDRESS: z.string().email().optional(),
-
-        // Stripe
-        STRIPE_SECRET_KEY: z.string().optional(),
-        STRIPE_PRODUCT_ID: z.string().optional(),
-        STRIPE_WEBHOOK_SECRET: z.string().optional(),
-        STRIPE_ENABLE_TEST_CLOCKS: booleanSchema.default('false'),
 
         // Misc
         CONFIG_MAX_REPOS_NO_TOKEN: numberSchema.default(Number.MAX_SAFE_INTEGER),

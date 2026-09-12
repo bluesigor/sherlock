@@ -3,13 +3,10 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { SettingsDropdown } from "./settingsDropdown";
 import { OrgSelector } from "./orgSelector";
-import { getSubscriptionData } from "@/actions";
 import { ErrorNavIndicator } from "./errorNavIndicator";
 import { WarningNavIndicator } from "./warningNavIndicator";
 import { ProgressNavIndicator } from "./progressNavIndicator";
 import { SherlockLogo } from "@/app/components/sherlockLogo";
-import { TrialNavIndicator } from "./trialNavIndicator";
-import { IS_BILLING_ENABLED } from "@/lib/stripe";
 import { env } from "@/env.mjs";
 
 interface NavigationMenuProps {
@@ -19,8 +16,6 @@ interface NavigationMenuProps {
 export const NavigationMenu = async ({
     domain,
 }: NavigationMenuProps) => {
-    const subscription = IS_BILLING_ENABLED ? await getSubscriptionData(domain) : null;
-
     return (
         <div className="flex flex-col w-screen h-fit bg-background">
             <div className="flex flex-row justify-between items-center py-1.5 px-3">
@@ -86,7 +81,6 @@ export const NavigationMenu = async ({
                     <ProgressNavIndicator />
                     <WarningNavIndicator />
                     <ErrorNavIndicator />
-                    <TrialNavIndicator subscription={subscription} />
 
 
                     <Link href="/about" className="px-2 text-sm">About Sherlock</Link>

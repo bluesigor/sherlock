@@ -16,6 +16,9 @@ Sherlock accepts a variety of environment variables to fine tune your deployment
 | `SOURCEBOT_ENCRYPTION_KEY` | - | <p>Used to encrypt connection secrets. Generated using `openssl rand -base64 24`. Automatically generated at startup if no value is provided.</p> |
 | `AUTH_SECRET` | - | <p>Used to validate login session cookies. Generated using `openssl rand -base64 33`. Automatically generated at startup if no value is provided.</p> |
 | `AUTH_URL` | - | <p>URL of your Sherlock deployment, e.g., `https://example.com` or `http://localhost:3000`. Required when `SOURCEBOT_AUTH_ENABLED` is `true`.</p> |
+| `AUTH_ENTRA_CLIENT_ID` | - | <p>Client id of the Microsoft Entra ID application. Enables the Entra provider together with `AUTH_ENTRA_CLIENT_SECRET` and `AUTH_ENTRA_TENANT_ID`. See [this doc](/self-hosting/more/authentication) for more info.</p> |
+| `AUTH_ENTRA_CLIENT_SECRET` | - | <p>Client secret of the Microsoft Entra ID application.</p> |
+| `AUTH_ENTRA_TENANT_ID` | - | <p>Directory (tenant) id of the Microsoft Entra ID application. The issuer is derived from it.</p> |
 | `SOURCEBOT_TENANCY_MODE` | `single` | <p>The tenancy configuration for Sherlock. Valid values are `single` or `multi`. See [this doc](/self-hosting/more/tenancy) for more info.</p> |
 | `SOURCEBOT_AUTH_ENABLED` | `false` | <p>Enables/disables authentication in Sherlock. If set to `false`, `SOURCEBOT_TENANCY_MODE` must be `single`. See [this doc](/self-hosting/more/authentication) for more info.</p> |
 | `SOURCEBOT_TELEMETRY_DISABLED` | `false` | <p>Enables/disables telemetry collection in Sherlock. See [this doc](/self-hosting/security/telemetry) for more info.</p> |

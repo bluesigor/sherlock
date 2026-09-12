@@ -30,11 +30,6 @@ enum ConnectionSyncStatus {
   FAILED
 }
 
-enum StripeSubscriptionStatus {
-  ACTIVE
-  INACTIVE
-}
-
 model Repo {
   id                 Int                @id @default(autoincrement())
   name               String
@@ -131,10 +126,6 @@ model Org {
   secrets     Secret[]
   isOnboarded Boolean      @default(false)
   imageUrl    String?
-
-  stripeCustomerId         String?
-  stripeSubscriptionStatus StripeSubscriptionStatus?
-  stripeLastUpdatedAt      DateTime?
 
   /// List of pending invites to this organization
   invites Invite[]

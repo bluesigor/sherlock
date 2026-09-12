@@ -1,12 +1,12 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import googleLogo from "@/public/google.svg";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { Fragment, useCallback, useMemo } from "react";
 import { Card } from "@/components/ui/card";
-import { cn, getCodeHostIcon } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { getOauthProviderDisplay } from "../oauthProviders";
 import { MagicLinkForm } from "./magicLinkForm";
 import { CredentialsForm } from "./credentialsForm";
 import { SherlockLogo } from "@/app/components/sherlockLogo";
@@ -18,8 +18,7 @@ interface LoginFormProps {
     callbackUrl?: string;
     error?: string;
     enabledMethods: {
-        github: boolean;
-        google: boolean;
+        oauth: { id: string; name: string }[];
         magicLink: boolean;
         credentials: boolean;
     }
@@ -30,6 +29,13 @@ export const LoginForm = ({ callbackUrl, error, enabledMethods }: LoginFormProps
     const onSignInWithOauth = useCallback((provider: string) => {
         signIn(provider, { redirectTo: callbackUrl ?? "/" });
     }, [callbackUrl]);
+
+    const oauthProviders = useMemo(
+        () => enabledMethods.oauth
+            .map(({ id }) => getOauthProviderDisplay(id))
+            .filter((provider) => provider !== undefined),
+        [enabledMethods.oauth]
+    );
 
     const errorMessage = useMemo(() => {
         if (!error) {
@@ -62,30 +68,19 @@ export const LoginForm = ({ callbackUrl, error, enabledMethods }: LoginFormProps
                 )}
                 <DividerSet
                     elements={[
-                        ...(enabledMethods.github || enabledMethods.google ? [
+                        ...(oauthProviders.length > 0 ? [
                             <>
-                                {enabledMethods.github && (
+                                {oauthProviders.map((provider) => (
                                     <ProviderButton
-                                        key="github"
-                                        name="GitHub"
-                                        logo={getCodeHostIcon("github")!}
+                                        key={provider.id}
+                                        name={provider.name}
+                                        logo={provider.logo}
                                         onClick={() => {
-                                            captureEvent("wa_login_with_github", {});
-                                            onSignInWithOauth("github")
+                                            captureEvent(provider.captureEventName as Parameters<typeof captureEvent>[0], {});
+                                            onSignInWithOauth(provider.id)
                                         }}
                                     />
-                                )}
-                                {enabledMethods.google && (
-                                    <ProviderButton
-                                        key="google"
-                                        name="Google"
-                                        logo={{ src: googleLogo }}
-                                        onClick={() => {
-                                            captureEvent("wa_login_with_google", {});
-                                            onSignInWithOauth("google")
-                                        }}
-                                    />
-                                )}
+                                ))}
                             </>
                         ] : []),
                         ...(enabledMethods.magicLink ? [

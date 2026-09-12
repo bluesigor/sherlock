@@ -15,7 +15,7 @@ export const CompleteOnboarding = () => {
         const complete = async () => {
             const response = await completeOnboarding(domain);
             if (isServiceError(response)) {
-                router.push(`/${domain}/onboard?step=${OnboardingSteps.Checkout}&errorCode=${response.errorCode}&errorMessage=${response.message}`);
+                router.push(`/${domain}/onboard?step=${OnboardingSteps.InviteTeam}&errorCode=${response.errorCode}&errorMessage=${response.message}`);
                 return;
             }
 
