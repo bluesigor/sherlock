@@ -186,6 +186,14 @@ const initSingleTenancy = async () => {
     // Load any connections defined declaratively in the config file.
     const configPath = env.CONFIG_PATH;
     if (configPath) {
+        // Connections come from the config file, so there is nothing for the
+        // onboarding wizard to ask. Without this the org stays un-onboarded and
+        // every sign-in lands in a setup flow for a code host already connected.
+        await prisma.org.update({
+            where: { id: SINGLE_TENANT_ORG_ID },
+            data: { isOnboarded: true },
+        });
+
         await scheduleDeclarativeConfigSync(configPath);
 
         // watch for changes assuming it is a local file

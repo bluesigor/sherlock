@@ -5,11 +5,13 @@ import { SettingsDropdown } from "./settingsDropdown";
 
 interface TopBarProps {
     defaultSearchQuery?: string;
+    defaultAiSearchQuery?: string;
     domain: string;
 }
 
 export const TopBar = ({
     defaultSearchQuery,
+    defaultAiSearchQuery,
     domain,
 }: TopBarProps) => {
     return (
@@ -24,6 +26,7 @@ export const TopBar = ({
                 <SearchBar
                     size="sm"
                     defaultQuery={defaultSearchQuery}
+                    defaultAiQuery={defaultAiSearchQuery}
                     className="w-full"
                 />
             </div>

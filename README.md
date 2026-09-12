@@ -30,15 +30,15 @@ in [FORK.md](FORK.md).
 
 ## Run locally
 
-1. Install Node.js (at least 21.1.0), Yarn, Go, Universal Ctags, PostgreSQL, and
-   a free-license Redis-compatible server. Use a separate database for Sherlock.
-2. Run `make` to install the locked dependencies and build the vendored Zoekt
-   search engine.
-3. Copy `.env.development` to `.env.development.local`. Configure your database,
-   Redis URL, authentication, and a private encryption key.
-4. Configure repositories in `default-config.json`, or set `CONFIG_PATH` to your
-   own file. The default configuration indexes no repositories.
-5. Run `yarn dev` and open http://localhost:3000.
+1. Install Node.js **24.15.0 or newer** (`nvm install && nvm use`), enable Yarn with `corepack enable`, and install Go, Universal Ctags, and Docker. Start Docker before continuing.
+2. Run `make` to install the locked dependencies and build the vendored Zoekt search engine.
+3. Copy `.env.development` to `.env.development.local`. Configure your database, Redis URL, authentication, and a private encryption key.
+4. Set `CONFIG_PATH=/absolute/path/to/sherlock/default-config.json` in `.env.development.local`, then configure repositories in that file, or point `CONFIG_PATH` to your own file. The default configuration indexes no repositories.
+5. Run `yarn dev` and open http://localhost:3000. This starts local PostgreSQL 16 and Redis 7.2 containers, builds Zoekt, and applies development migrations. New containers bind only to localhost. Existing containers are reused; their ports and settings are not changed.
+
+If you already manage PostgreSQL and Redis, configure their URLs and run `yarn dev:zoekt:build`, `yarn dev:prisma:migrate:dev`, then run `yarn dev:zoekt`, `yarn dev:backend`, and `yarn dev:web` in separate terminals. Do not run `yarn dev`, which starts the bundled development containers.
+
+Run `yarn test` for all unit tests and `yarn build` for a production build. See [AI search setup](docs/self-hosting/ai-search.md) to enable optional natural-language search.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) and the
 [configuration documentation](docs/self-hosting/configuration.mdx).
@@ -100,15 +100,14 @@ Details in [authentication](docs/self-hosting/more/authentication.mdx).
 
 ```sh
 docker build -t sherlock:local .
+docker run --name sherlock -p 127.0.0.1:3000:3000 -v sherlock-data:/data sherlock:local
 ```
 
-Deploy that image with your own configuration and persistent storage. It starts
-a PostgreSQL and a Redis instance internally unless external services are
-configured, and keeps the index, the database and the cache under `/data` — mount
-a volume there, or an update discards the index and re-clones everything.
+The command above provides a local instance with persistent storage. To use a configuration file, mount it read-only and set `CONFIG_PATH` to its absolute path inside the container. For shared deployments, configure authentication and HTTPS before making the instance reachable outside localhost.
 
-Do not use upstream Sourcebot images for Sherlock. Fly templates require your own
-unique application name. Registry publishing is manual.
+The image starts a PostgreSQL and a Redis instance unless external services are configured, and keeps the index, the database and the cache under `/data` — mount a volume there, or an update discards the index and re-clones everything.
+
+Do not use upstream Sourcebot images for Sherlock. Fly templates require your own unique application name. Registry publishing is manual and targets the current GitHub repository.
 
 ## Identity and integrations
 

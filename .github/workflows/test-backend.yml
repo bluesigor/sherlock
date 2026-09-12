@@ -16,11 +16,11 @@ jobs:
       - name: Use Node.Js
         uses: actions/setup-node@v4
         with:
-            node-version: '20.x'
+            node-version-file: '.nvmrc'
     
       - name: Install
-        run: yarn install --frozen-lockfile
+        run: corepack enable && yarn install --immutable
     
       - name: Test
-        run: yarn workspace @sourcebot/backend test
+        run: yarn workspace @sourcebot/backend test --run
     

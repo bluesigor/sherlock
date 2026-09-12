@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "ModelConfig",
+    "type": "object",
+    "description": "Defines a language model that Sherlock can use to translate natural language into a search query.",
+    "properties": {
+        "provider": {
+            "type": "string",
+            "enum": [
+                "openai",
+                "anthropic"
+            ],
+            "description": "The provider that hosts the model."
+        },
+        "model": {
+            "type": "string",
+            "description": "The provider specific model identifier (e.g., `gpt-4o-mini`, `claude-3-5-haiku-latest`).",
+            "minLength": 1
+        },
+        "displayName": {
+            "type": "string",
+            "description": "The name shown to the user when selecting this model.",
+            "minLength": 1
+        },
+        "token": {
+            "type": "object",
+            "description": "The API token used to authenticate with the provider.",
+            "properties": {
+                "env": {
+                    "type": "string",
+                    "description": "The name of the environment variable that contains the token.",
+                    "minLength": 1
+                }
+            },
+            "required": [
+                "env"
+            ],
+            "additionalProperties": false
+        }
+    },
+    "required": [
+        "provider",
+        "model",
+        "displayName",
+        "token"
+    ],
+    "additionalProperties": false
+}

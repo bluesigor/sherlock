@@ -19,6 +19,10 @@ export interface SherlockConfig {
   connections?: {
     [k: string]: ConnectionConfig;
   };
+  /**
+   * Defines a collection of language models that Sherlock can use for AI search. If omitted or empty, AI search is disabled.
+   */
+  models?: ModelConfig[];
 }
 /**
  * Defines the globabl settings for Sherlock.
@@ -299,5 +303,31 @@ export interface GerritConnectionConfig {
      * List of specific projects to exclude from syncing.
      */
     projects?: string[];
+  };
+}
+/**
+ * Defines a language model that Sherlock can use to translate natural language into a search query.
+ */
+export interface ModelConfig {
+  /**
+   * The provider that hosts the model.
+   */
+  provider: "openai" | "anthropic";
+  /**
+   * The provider specific model identifier (e.g., `gpt-4o-mini`, `claude-3-5-haiku-latest`).
+   */
+  model: string;
+  /**
+   * The name shown to the user when selecting this model.
+   */
+  displayName: string;
+  /**
+   * The API token used to authenticate with the provider.
+   */
+  token: {
+    /**
+     * The name of the environment variable that contains the token.
+     */
+    env: string;
   };
 }

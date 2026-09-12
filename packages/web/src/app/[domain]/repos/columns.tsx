@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button"
 import type { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, ExternalLink, Clock, Loader2, CheckCircle2, XCircle, Trash2, Check, ListFilter } from "lucide-react"
 import Image from "next/image"
+import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { cn } from "@/lib/utils"
+import { cn, getCodeHostIcon, CodeHostType } from "@/lib/utils"
 import { RepoIndexingStatus } from "@sourcebot/db";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { AddRepoButton } from "./addRepoButton"
@@ -14,6 +15,10 @@ import { AddRepoButton } from "./addRepoButton"
 export type RepositoryColumnInfo = {
     name: string
     imageUrl?: string
+    // Raw code host type as stored on the repo (e.g., "github", "gitlab").
+    // Not narrowed to `CodeHostType` since it comes from a plain string
+    // field in the db/API layer; `getCodeHostIcon` handles unknown values.
+    codeHostType: string
     connections: {
         id: number
         name: string
@@ -21,6 +26,56 @@ export type RepositoryColumnInfo = {
     repoIndexingStatus: RepoIndexingStatus
     lastIndexed: string
     url: string
+}
+
+const RepoAvatar = ({
+    name,
+    imageUrl,
+    codeHostType,
+}: {
+    name: string
+    imageUrl?: string
+    codeHostType: string
+}) => {
+    const [hasImageError, setHasImageError] = useState(false);
+    const codeHostIcon = getCodeHostIcon(codeHostType as CodeHostType);
+
+    // Prefer the repo's own avatar, but fall back to the code host's logo
+    // if there isn't one, or if it fails to load (e.g., a private avatar
+    // URL that 401s without auth). Only fall back to the repo's first
+    // letter if we don't even know the code host.
+    if (imageUrl && !hasImageError) {
+        return (
+            <Image
+                src={imageUrl}
+                alt={`${name} logo`}
+                width={32}
+                height={32}
+                className="object-cover"
+                onError={() => setHasImageError(true)}
+            />
+        )
+    }
+
+    if (codeHostIcon) {
+        return (
+            <div className="flex h-full w-full items-center justify-center bg-muted p-1.5">
+                <Image
+                    src={codeHostIcon.src}
+                    alt={`${codeHostType} logo`}
+                    width={32}
+                    height={32}
+                    className={cn("h-full w-full object-contain", codeHostIcon.className)}
+                />
+            </div>
+        )
+    }
+
+    return (
+        <div className="flex h-full w-full items-center justify-center bg-muted text-xs font-medium uppercase text-muted-foreground">
+            {name.charAt(0)}
+        </div>
+    )
 }
 
 const statusLabels = {
@@ -110,19 +165,11 @@ export const columns = (domain: string, isAddNewRepoButtonVisible: boolean): Col
             return (
                 <div className="flex flex-row items-center gap-3 py-2">
                     <div className="relative h-8 w-8 overflow-hidden rounded-md border bg-muted">
-                        {repo.imageUrl ? (
-                            <Image
-                                src={repo.imageUrl || "/placeholder.svg"}
-                                alt={`${repo.name} logo`}
-                                width={32}
-                                height={32}
-                                className="object-cover"
-                            />
-                        ) : (
-                            <div className="flex h-full w-full items-center justify-center bg-muted text-xs font-medium uppercase text-muted-foreground">
-                                {repo.name.charAt(0)}
-                            </div>
-                        )}
+                        <RepoAvatar
+                            name={repo.name}
+                            imageUrl={repo.imageUrl}
+                            codeHostType={repo.codeHostType}
+                        />
                     </div>
                     <div className="flex items-center gap-2">
                         <span
