@@ -96,6 +96,35 @@ an account gains no access on its own and must be invited. Set
 
 Details in [authentication](docs/self-hosting/more/authentication.mdx).
 
+## Use it from an AI assistant (MCP)
+
+Sherlock speaks the [Model Context Protocol](https://modelcontextprotocol.io) at
+`/api/mcp` over Streamable HTTP, so an assistant can search your code directly
+rather than being pasted snippets of it.
+
+Create an API key under **Settings → API Keys** — the key is shown once, and only
+its hash is stored. Then register the server:
+
+```sh
+claude mcp add --transport http sherlock https://your-sherlock-host/api/mcp \
+  --header "Authorization: Bearer YOUR_KEY"
+```
+
+The assistant then has four tools:
+
+| Tool | What it does |
+| --- | --- |
+| `search_code` | Runs a zoekt query and returns matching lines with their line numbers |
+| `get_file` | Returns one file in full, with line numbers |
+| `list_repos` | Lists indexed repositories, one page at a time |
+| `ask_codebase` | Translates a plain-language question into a query and runs it |
+
+Every tool that returns a list is paginated, so a single call cannot flood the
+assistant's context. A key acts as the user who created it and sees exactly what
+that user sees. Revoking a key in the settings takes effect immediately, and a
+key stops working as soon as its owner leaves the organisation or is removed
+from it.
+
 ## Build your own image
 
 ```sh

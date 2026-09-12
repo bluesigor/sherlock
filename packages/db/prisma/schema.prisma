@@ -129,6 +129,8 @@ model Org {
 
   /// List of pending invites to this organization
   invites Invite[]
+
+  apiKeys ApiKey[]
 }
 
 enum OrgRole {
@@ -179,6 +181,9 @@ model User {
   /// List of pending invites that the user has created
   invites Invite[]
 
+  /// Keys this user issued for headless access (MCP, scripts)
+  apiKeys ApiKey[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -213,4 +218,26 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+/// A bearer credential for non-browser access. Only the hash is stored, so a
+/// lost key cannot be recovered - it is shown once at creation and then revoked
+/// and replaced.
+model ApiKey {
+  id         String    @id @default(cuid())
+  name       String
+  hash       String    @unique
+  /// The leading characters of the key, so a user can tell their keys apart
+  /// without the secret being recoverable.
+  preview    String
+  orgId      Int
+  userId     String
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  org  Org  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([orgId])
+  @@index([userId])
 }
