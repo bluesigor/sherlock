@@ -220,7 +220,14 @@ const SearchPageInternal = () => {
                             </p>
                         </>
                     ) : (
-                        <p className="text-sm text-muted-foreground text-center">Try again, rephrase your description, or use a normal search.</p>
+                        <>
+                            {(error as ServiceErrorException)?.serviceError?.message && (
+                                <p className="max-w-xl text-sm text-muted-foreground text-center">
+                                    {(error as ServiceErrorException).serviceError.message}
+                                </p>
+                            )}
+                            <p className="text-sm text-muted-foreground text-center">Try again, rephrase your description, or use a normal search.</p>
+                        </>
                     )}
                 </div>
             ) : isLoading ? (
