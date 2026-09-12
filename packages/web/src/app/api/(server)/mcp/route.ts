@@ -152,11 +152,17 @@ const handle = async (request: NextRequest): Promise<Response> => {
 
     try {
         await server.connect(transport);
-        return await transport.handleRequest(request);
-    } finally {
+    } catch (error) {
         await transport.close();
         await server.close();
+        throw error;
     }
+
+    // Closing here would tear the stream down before the client has read it,
+    // leaving a 200 with an empty body. The response outlives this function, so
+    // the cleanup has to follow the response, not the return.
+    transport.onclose = () => { void server.close(); };
+    return transport.handleRequest(request);
 };
 
 export const POST = handle;
