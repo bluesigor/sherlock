@@ -1,5 +1,5 @@
 import { prisma } from "@/prisma";
-import { auth } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { getOrgFromDomain } from "@/data/org";
 import { isServiceError } from "@/lib/utils";
 import { OnboardGuard } from "./components/onboardGuard";
@@ -42,6 +42,18 @@ export default async function Layout({
         });
 
         if (!membership) {
+            const user = await prisma.user.findUnique({
+                where: { id: session.user.id },
+            });
+
+            // A session can outlive the user it names - a restored database, a
+            // deleted account. signOut throws a redirect, so nothing below it
+            // runs for that case; a real user who simply lacks membership
+            // still gets the 404.
+            if (!user) {
+                await signOut({ redirectTo: '/login' });
+            }
+
             return notFound();
         }
     }
