@@ -43,6 +43,7 @@
     "@hookform/resolvers": "^3.9.0",
     "@iconify/react": "^5.1.0",
     "@iizukak/codemirror-lang-wgsl": "^0.3.0",
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "@radix-ui/react-alert-dialog": "^1.1.5",
     "@radix-ui/react-avatar": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.4",

@@ -25,6 +25,7 @@ import { createTransport } from "nodemailer";
 import { orgDomainSchema, orgNameSchema, repositoryQuerySchema } from "./lib/schemas";
 import { TenancyMode } from "./lib/types";
 import { MOBILE_UNSUPPORTED_SPLASH_SCREEN_DISMISSED_COOKIE_NAME, SINGLE_TENANT_USER_EMAIL, SINGLE_TENANT_USER_ID } from "./lib/constants";
+import { generateApiKey, hashApiKey, previewApiKey } from "./lib/apiKey";
 
 const ajv = new Ajv({
     validateFormats: false,
@@ -973,14 +974,25 @@ export const removeMemberFromOrg = async (memberId: string, domain: string): Pro
                 return notFound();
             }
 
-            await prisma.userToOrg.delete({
-                where: {
-                    orgId_userId: {
+            await prisma.$transaction([
+                prisma.userToOrg.delete({
+                    where: {
+                        orgId_userId: {
+                            orgId,
+                            userId: memberId,
+                        }
+                    }
+                }),
+                // Their keys no longer authenticate once membership is gone, but
+                // leaving them behind would silently restore access if the member
+                // is ever added back.
+                prisma.apiKey.deleteMany({
+                    where: {
                         orgId,
                         userId: memberId,
                     }
-                }
-            });
+                }),
+            ]);
 
             return {
                 success: true,
@@ -1009,14 +1021,22 @@ export const leaveOrg = async (domain: string): Promise<{ success: boolean } | S
                 return notFound();
             }
 
-            await prisma.userToOrg.delete({
-                where: {
-                    orgId_userId: {
+            await prisma.$transaction([
+                prisma.userToOrg.delete({
+                    where: {
+                        orgId_userId: {
+                            orgId,
+                            userId: session.user.id,
+                        }
+                    }
+                }),
+                prisma.apiKey.deleteMany({
+                    where: {
                         orgId,
                         userId: session.user.id,
                     }
-                }
-            });
+                }),
+            ]);
 
             return {
                 success: true,
@@ -1184,3 +1204,73 @@ export const encryptValue = async (value: string) => {
 export const decryptValue = async (iv: string, encryptedValue: string) => {
     return decrypt(iv, encryptedValue);
 }
+
+export const getApiKeys = (domain: string): Promise<{ id: string; name: string; preview: string; createdAt: Date; lastUsedAt: Date | null; }[] | ServiceError> => sew(() =>
+    withAuth((session) =>
+        withOrgMembership(session, domain, async ({ orgId }) => {
+            const keys = await prisma.apiKey.findMany({
+                where: {
+                    orgId,
+                    userId: session.user.id,
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    preview: true,
+                    createdAt: true,
+                    lastUsedAt: true,
+                },
+                orderBy: {
+                    createdAt: 'desc',
+                },
+            });
+
+            return keys;
+        })));
+
+export const createApiKey = async (name: string, domain: string): Promise<{ key: string } | ServiceError> => sew(() =>
+    withAuth((session) =>
+        withOrgMembership(session, domain, async ({ orgId }) => {
+            const trimmedName = name.trim();
+            if (trimmedName.length === 0) {
+                return {
+                    statusCode: StatusCodes.BAD_REQUEST,
+                    errorCode: ErrorCode.INVALID_REQUEST_BODY,
+                    message: 'A name is required.',
+                } satisfies ServiceError;
+            }
+
+            const key = generateApiKey();
+
+            await prisma.apiKey.create({
+                data: {
+                    name: trimmedName,
+                    hash: hashApiKey(key),
+                    preview: previewApiKey(key),
+                    orgId,
+                    userId: session.user.id,
+                },
+            });
+
+            // The only time the caller ever sees the key. Only its hash is stored.
+            return { key };
+        })));
+
+export const deleteApiKey = async (id: string, domain: string): Promise<{ success: boolean } | ServiceError> => sew(() =>
+    withAuth((session) =>
+        withOrgMembership(session, domain, async ({ orgId }) => {
+            const deleted = await prisma.apiKey.deleteMany({
+                where: {
+                    id,
+                    orgId,
+                    // Scoped to the session user so one member cannot revoke another's key.
+                    userId: session.user.id,
+                },
+            });
+
+            if (deleted.count === 0) {
+                return notFound();
+            }
+
+            return { success: true };
+        })));
