@@ -6,6 +6,7 @@ import { aiSearchFailed, aiSearchNotConfigured, aiTranslationFailed, ServiceErro
 import { AiPreviewRequest, AiPreviewResponse, AiSearchRequest, AiSearchResponse } from '../types';
 import { isServiceError } from '../utils';
 import { AiModelConfig, getAiModel } from './aiModelsConfig';
+import { describeProviderError } from './aiProviderError';
 import { search, zoektPrefixes } from './searchService';
 
 const EXAMPLES: [naturalLanguage: string, query: string][] = [
@@ -57,6 +58,8 @@ const generateQuery = async (query: string, model: AiModelConfig, signal?: Abort
     if (signal?.aborted) return aiTranslationFailed("request cancelled");
     const release = acquireAiRequest();
     if (isServiceError(release)) return release;
+    let providerFailure: string | undefined;
+
     const translatedQuery = await (async () => {
         try {
             const { text } = await generateText({
@@ -71,6 +74,7 @@ const generateQuery = async (query: string, model: AiModelConfig, signal?: Abort
             return normalizeQuery(text);
         } catch (error) {
             console.error(`AI query translation failed: ${error}`);
+            providerFailure = describeProviderError(error);
             return undefined;
         } finally {
             release();
@@ -78,7 +82,7 @@ const generateQuery = async (query: string, model: AiModelConfig, signal?: Abort
     })();
 
     if (!translatedQuery) {
-        return aiTranslationFailed(`the model '${model.id}' did not return a usable query`);
+        return aiTranslationFailed(providerFailure ?? `the model '${model.id}' did not return a usable query`);
     }
 
     return translatedQuery;
