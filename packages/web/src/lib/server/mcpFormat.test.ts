@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { formatRepositoryPage, formatSearchResult, paginate } from './mcpFormat';
+import { formatFileSource, formatRepositoryPage, formatSearchResult, paginate } from './mcpFormat';
 import type { ListRepositoriesResponse, SearchResponse } from '../types';
 
 const encode = (text: string) => Buffer.from(text).toString('base64');
@@ -95,6 +95,50 @@ describe('formatSearchResult', () => {
 
     test('names the query it ran so the agent can refine it', () => {
         expect(formatSearchResult(searchResponse(null), 'repo:foo bar')).toContain('repo:foo bar');
+    });
+});
+
+describe('formatFileSource', () => {
+    // getFileSource hands back what zoekt stored, which is base64 - the browser
+    // page decodes it at the call site, and so must this.
+    test('decodes the source rather than printing base64', () => {
+        const source = encode('class Main {\n  void run() {}\n}');
+
+        const text = formatFileSource(source, 'Java', 'exp/foo', 'src/Main.java');
+
+        expect(text).toContain('1: class Main {');
+        expect(text).toContain('2:   void run() {}');
+        expect(text).not.toContain(source);
+    });
+
+    test('counts the lines of the decoded source, not of the encoding', () => {
+        const text = formatFileSource(encode('a\nb\nc'), 'Java', 'exp/foo', 'src/A.java');
+
+        expect(text).toContain('3 lines');
+    });
+
+    test('keeps non-ascii source intact', () => {
+        const text = formatFileSource(encode('// Prüfung fehlgeschlagen'), 'Java', 'exp/foo', 'src/A.java');
+
+        expect(text).toContain('// Prüfung fehlgeschlagen');
+    });
+
+    // A generated file runs to tens of thousands of lines; handing all of it
+    // over evicts the conversation that asked for it.
+    test('truncates a very long file and says so', () => {
+        const long = encode(Array.from({ length: 5000 }, (_, i) => `line ${i}`).join('\n'));
+
+        const text = formatFileSource(long, 'Java', 'exp/foo', 'src/Big.java');
+
+        expect(text.split('\n').length).toBeLessThan(2100);
+        expect(text).toContain('truncated');
+        expect(text).toContain('5000 lines');
+    });
+
+    test('leaves a file within the limit untouched', () => {
+        const text = formatFileSource(encode('a\nb\nc'), 'Java', 'exp/foo', 'src/A.java');
+
+        expect(text).not.toContain('truncated');
     });
 });
 

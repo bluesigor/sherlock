@@ -4,6 +4,9 @@ import type { ListRepositoriesResponse, SearchResponse } from '../types';
 const DEFAULT_PAGE_SIZE = 50;
 const MAX_PAGE_SIZE = 200;
 
+/** A generated file can run to tens of thousands of lines. */
+const MAX_FILE_LINES = 2000;
+
 export interface Page<T> {
     items: T[];
     page: number;
@@ -93,10 +96,22 @@ export const formatFileSource = (
     repository: string,
     fileName: string,
 ): string => {
-    const lines = source.split('\n');
+    // getFileSource passes zoekt's stored content straight through, which is
+    // base64; the browse page decodes at the call site and so does this.
+    const lines = base64Decode(source).split('\n');
+    const shown = lines.slice(0, MAX_FILE_LINES);
+    const header = `${repository}:${fileName} (${language}, ${lines.length} lines)`;
+    const body = shown.map((line, index) => `${index + 1}: ${line}`).join('\n');
+
+    if (shown.length === lines.length) {
+        return [header, '', body].join('\n');
+    }
+
     return [
-        `${repository}:${fileName} (${language}, ${lines.length} lines)`,
+        header,
         '',
-        lines.map((line, index) => `${index + 1}: ${line}`).join('\n'),
+        body,
+        '',
+        `... truncated at line ${MAX_FILE_LINES} of ${lines.length}. Use search_code with a file: filter to reach the rest.`,
     ].join('\n');
 };
