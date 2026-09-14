@@ -7,29 +7,10 @@ import { AiPreviewRequest, AiPreviewResponse, AiSearchRequest, AiSearchResponse 
 import { isServiceError } from '../utils';
 import { AiModelConfig, getAiModel } from './aiModelsConfig';
 import { describeProviderError } from './aiProviderError';
-import { search, zoektPrefixes } from './searchService';
+import { search } from './searchService';
+import { SYSTEM_PROMPT } from './aiSearchPrompt';
 
-const EXAMPLES: [naturalLanguage: string, query: string][] = [
-    ['TODOs in typescript', 'TODO lang:typescript'],
-    ['the function that parses the zoekt response', 'sym:parseZoektResponse'],
-    ['where do we read the connection config', 'sym:readConnectionConfig'],
-    ['react components that call useEffect', String.raw`useEffect\( lang:typescript`],
-    ['config file for the gitlab connection', String.raw`file:gitlab.*\.json`],
-];
 
-const SYSTEM_PROMPT = [
-    'You translate a natural language description of code into a single zoekt search query.',
-    'Respond with the query on a single line and nothing else: no explanation, no markdown, no quotes.',
-    `The supported query prefixes are: ${Object.values(zoektPrefixes).join(', ')}.`,
-    'Terms without a prefix match file content. Values are regular expressions.',
-    'Use a prefix whenever the description implies one: a programming language becomes lang:, a file name or extension becomes file:, the name of a function, class, type or variable becomes sym:, a repository name becomes repo:.',
-    'When the description points at a named thing rather than at prose, search for its likely identifier spelling with sym: instead of searching for the words of the description.',
-    'Drop conversational filler such as "where do we", "find all" or "show me" rather than searching for those words.',
-    'A term is excluded by prefixing it with a minus sign; there is no other negation syntax.',
-    'Every value must be a valid RE2 regular expression: escape the metacharacters ( ) [ ] { } . + * ? | ^ $ \\ wherever they are part of a literal term,',
-    String.raw`so a call to useEffect( must be written as useEffect\(.`,
-    `Examples: ${EXAMPLES.map(([naturalLanguage, query]) => `"${naturalLanguage}" -> ${query}`).join('; ')}.`,
-].join(' ');
 
 const getLanguageModel = ({ provider, model, token }: AiModelConfig) => {
     const apiKey = process.env[token.env];

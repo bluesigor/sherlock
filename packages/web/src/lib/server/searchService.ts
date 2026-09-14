@@ -1,4 +1,5 @@
 import escapeStringRegexp from "escape-string-regexp";
+import { zoektPrefixes } from "../zoektPrefixes";
 import { env } from "@/env.mjs";
 import { listRepositoriesResponseSchema, zoektSearchResponseSchema } from "../schemas";
 import { FileSourceRequest, FileSourceResponse, ListRepositoriesResponse, SearchRequest, SearchResponse } from "../types";
@@ -6,27 +7,6 @@ import { fileNotFound, invalidZoektResponse, ServiceError, unexpectedError } fro
 import { isServiceError } from "../utils";
 import { zoektFetch } from "./zoektClient";
 
-// List of supported query prefixes in zoekt.
-// @see : https://github.com/sourcebot-dev/zoekt/blob/main/query/parse.go#L417
-export enum zoektPrefixes {
-    archived = "archived:",
-    branchShort = "b:",
-    branch =  "branch:",
-    caseShort =  "c:",
-    case =  "case:",
-    content =  "content:",
-    fileShort =  "f:",
-    file =  "file:",
-    fork =  "fork:",
-    public =  "public:",
-    repoShort =  "r:",
-    repo =  "repo:",
-    regex =  "regex:",
-    lang =  "lang:",
-    sym =  "sym:",
-    typeShort =  "t:",
-    type =  "type:",
-}
 
 // Mapping of additional "alias" prefixes to zoekt prefixes.
 const aliasPrefixMappings: Record<string, zoektPrefixes> = {
@@ -164,3 +144,5 @@ export const listRepositories = async (orgId: number): Promise<ListRepositoriesR
 
     return parsedListResponse.data;
 }
+
+export { zoektPrefixes };
