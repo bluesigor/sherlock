@@ -1,3 +1,18 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="packages/web/public/sherlock-mark.png">
+    <img src="packages/web/public/sherlock-mark-light.png" alt="Sherlock" width="200">
+  </picture>
+</p>
+
+<p align="center">
+  <a href="LICENSE"><img alt="license" src="https://img.shields.io/badge/license-MIT-blue"></a>
+  <a href="https://github.com/explore-de/sherlock/actions/workflows/pr-gate.yml"><img alt="PR Gate" src="https://github.com/explore-de/sherlock/actions/workflows/pr-gate.yml/badge.svg"></a>
+  <a href="https://github.com/explore-de/sherlock/actions/workflows/test-web.yml"><img alt="Test Web" src="https://github.com/explore-de/sherlock/actions/workflows/test-web.yml/badge.svg"></a>
+  <a href="https://github.com/explore-de/sherlock/actions/workflows/test-backend.yml"><img alt="Test Backend" src="https://github.com/explore-de/sherlock/actions/workflows/test-backend.yml/badge.svg"></a>
+  <a href="https://github.com/explore-de/sherlock/actions/workflows/ghcr-publish.yml"><img alt="Publish to ghcr" src="https://github.com/explore-de/sherlock/actions/workflows/ghcr-publish.yml/badge.svg"></a>
+</p>
+
 # Sherlock
 
 Search and explore code across your repositories, on your own infrastructure.
@@ -6,13 +21,6 @@ Sherlock indexes the repositories you point it at and makes them searchable by
 regular expression and by symbol, across every branch you choose to index. It
 runs entirely on your own hardware: no repository content, no query, and no
 telemetry leaves the machine you deploy it on.
-
-Sherlock is an independent project originating from **Sourcebot v3.0.4**, the
-last release before Enterprise licensing was introduced. The original MIT
-copyright and permission notice remain in [LICENSE](LICENSE). Third-party
-components retain their own licenses, inventoried in
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Exact revisions are recorded
-in [FORK.md](FORK.md).
 
 ## What it does
 
@@ -154,3 +162,12 @@ Database migration history and vendored source are intentionally preserved.
 Documentation screenshots are inherited historical examples and may show upstream
 branding; they are not Sherlock product screenshots. Before public distribution,
 review third-party license obligations and your deployment's policies.
+
+## Provenance
+
+Sherlock is an independent project originating from Sourcebot v3.0.4, the
+last release before Enterprise licensing was introduced. The original MIT
+copyright and permission notice remain in [LICENSE](LICENSE). Third-party
+components retain their own licenses, inventoried in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Exact revisions are recorded
+in [FORK.md](FORK.md).
