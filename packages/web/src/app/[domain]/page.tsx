@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getOrgFromDomain } from "@/data/org";
 import { PageNotFound } from "./components/pageNotFound";
 import { Footer } from "@/app/components/footer";
+import { PipeSmoke } from "../components/pipeSmoke";
 import { SherlockLogo } from "../components/sherlockLogo";
 import { RepositorySnapshot } from "./components/repositorySnapshot";
 import { SyntaxReferenceGuideHint } from "./components/syntaxReferenceGuideHint";
@@ -22,10 +23,12 @@ export default async function Home({ params: { domain } }: { params: { domain: s
             />
 
             <div className="flex flex-col justify-center items-center mt-8 mb-8 md:mt-18 w-full px-5">
-                <div className="cyber-bloom max-h-44 w-auto">
+                <div className="cyber-bloom search-hero-logo w-auto">
                     <SherlockLogo
-                        className="h-16 md:h-28 w-auto"
+                        className="h-44 md:h-56 w-auto"
+                        smokingProfile
                     />
+                    <PipeSmoke />
                 </div>
                 <SearchBar
                     autoFocus={true}

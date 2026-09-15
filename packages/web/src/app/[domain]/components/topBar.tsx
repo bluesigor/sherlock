@@ -21,7 +21,7 @@ export const TopBar = ({
                     href={`/${domain}`}
                     className="shrink-0 cursor-pointer"
                 >
-                    <SherlockLogo className="h-6" />
+                    <SherlockLogo className="h-11" />
                 </Link>
                 <SearchBar
                     size="sm"

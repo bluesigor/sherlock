@@ -230,16 +230,6 @@
   );
 }
 
-/* The pipe mark ships in two strikes; show the one that suits the ground.
- * Defined on the bare selector first so the un-stamped (system) state is correct. */
-.mark-dark { display: none; }
-.mark-light { display: inline; }
-.dark .mark-dark { display: inline; }
-.dark .mark-light { display: none; }
-
-/* Pixel art must not be smoothed when scaled. */
-.mark-dark, .mark-light { image-rendering: pixelated; }
-
 /* Pixel wordmark. Integer-friendly rendering keeps the edges square. */
 .pixel-type {
   font-family: var(--font-pixel), ui-monospace, monospace;
@@ -262,3 +252,40 @@
     0 0 0 1px hsl(var(--neon) / 0.35),
     0 0 18px -2px hsl(var(--neon) / calc(var(--glow-strength) * 0.8));
 }
+
+/* Motion is enabled only for the search hero. */
+.search-hero-logo {
+  position: relative;
+  --pipe-cycle: 4.8s;
+  --pipe-smoke-color: 265 18% 48%;
+}
+.dark .search-hero-logo { --pipe-smoke-color: 265 20% 78%; }
+.pipe-smoke-canvas {
+  position: absolute;
+  left: 0;
+  top: -110%;
+  width: 100%;
+  height: 210%;
+  pointer-events: none;
+}
+
+/* Match the original pipe and pixel wordmark at every display size. */
+.sherlock-profile { image-rendering: pixelated; }
+
+/* Vertical flex around the lips: the mouthpiece stays fixed and x never changes. */
+.smoking-pipe {
+  transform-box: view-box;
+  /* y includes the SVG viewBox offset of -24. */
+  transform-origin: 31.3px 41.2px;
+  animation: sherlock-pipe-draw var(--pipe-cycle) ease-in-out infinite;
+}
+@keyframes sherlock-pipe-draw {
+  0%, 100% { transform: skewY(0deg); }
+  50% { transform: skewY(5deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pipe-smoke-canvas { display: none; }
+  .smoking-pipe { animation: none; }
+}
+
+.sherlock-static .smoking-pipe { animation: none; }

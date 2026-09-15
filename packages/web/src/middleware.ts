@@ -6,7 +6,13 @@ import { SINGLE_TENANT_ORG_DOMAIN } from '@/lib/constants'
 export async function middleware(request: NextRequest) {
     const url = request.nextUrl.clone();
 
-    if (url.pathname === "/about" || url.pathname === "/icon.svg" || url.pathname === "/sherlock-social.png") {
+    if ([
+        "/about",
+        "/icon.svg",
+        "/sherlock-logo.svg",
+        "/sherlock-social.png",
+        "/sherlock-smoking.png",
+    ].includes(url.pathname)) {
         return NextResponse.next();
     }
 
